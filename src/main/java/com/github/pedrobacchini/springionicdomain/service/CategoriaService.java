@@ -1,10 +1,9 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
 import com.github.pedrobacchini.springionicdomain.domain.Categoria;
+import com.github.pedrobacchini.springionicdomain.service.exception.ObjectNotFoundException;
 import com.github.pedrobacchini.springionicdomain.repository.CategoriaRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CategoriaService {
@@ -15,7 +14,10 @@ public class CategoriaService {
         this.categoriaRepository = categoriaRepository;
     }
 
-    public Optional<Categoria> buscarPeloID(Integer id) {
-        return categoriaRepository.findById(id);
+    public Categoria buscarPeloID(Integer id) {
+        return categoriaRepository.findById(id)
+                .orElseThrow(() ->
+                        new ObjectNotFoundException("Objeto não encontrado! Id: " + id
+                                + ", Tipo: " + Categoria.class.getName()));
     }
 }

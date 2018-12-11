@@ -20,7 +20,7 @@ public class CategoriaResource {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarCategoria(@PathVariable Integer id) {
-        Categoria categoria = categoriaService.buscarPeloID(id).orElseThrow(IllegalArgumentException::new);
+        Categoria categoria = categoriaService.buscarPeloID(id);
         return ResponseEntity.ok(categoria);
     }
 }
