@@ -1,8 +1,12 @@
 package com.github.pedrobacchini.springionicdomain;
 
 import com.github.pedrobacchini.springionicdomain.domain.Categoria;
+import com.github.pedrobacchini.springionicdomain.domain.Cidade;
+import com.github.pedrobacchini.springionicdomain.domain.Estado;
 import com.github.pedrobacchini.springionicdomain.domain.Produto;
 import com.github.pedrobacchini.springionicdomain.repository.CategoriaRepository;
+import com.github.pedrobacchini.springionicdomain.repository.CidadeRepository;
+import com.github.pedrobacchini.springionicdomain.repository.EstadoRepository;
 import com.github.pedrobacchini.springionicdomain.repository.ProdutoRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,10 +20,17 @@ public class SpringIonicDomainApplication implements CommandLineRunner {
 
     private final CategoriaRepository categoriaRepository;
     private final ProdutoRepository produtoRepository;
+    private final EstadoRepository estadoRepository;
+    private final CidadeRepository cidadeRepository;
 
-    public SpringIonicDomainApplication(CategoriaRepository categoriaRepository, ProdutoRepository produtoRepository) {
+    public SpringIonicDomainApplication(CategoriaRepository categoriaRepository,
+                                        ProdutoRepository produtoRepository,
+                                        EstadoRepository estadoRepository,
+                                        CidadeRepository cidadeRepository) {
         this.categoriaRepository = categoriaRepository;
         this.produtoRepository = produtoRepository;
+        this.estadoRepository = estadoRepository;
+        this.cidadeRepository = cidadeRepository;
     }
 
     public static void main(String[] args) {
@@ -44,5 +55,19 @@ public class SpringIonicDomainApplication implements CommandLineRunner {
 
         categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2));
         produtoRepository.saveAll(Arrays.asList(produto1, produto2, produto3));
+
+        Estado estado1 = new Estado(null, "Minas Gerais");
+        Estado estado2 = new Estado(null, "São Paulo");
+
+        Cidade cidade1 = new Cidade(null, "Uberlândia", estado1);
+        Cidade cidade2 = new Cidade(null, "São Paulo", estado2);
+        Cidade cidade3 = new Cidade(null, "Campinas", estado2);
+
+        estado1.getCidades().add(cidade1);
+        estado2.getCidades().addAll(Arrays.asList(cidade2, cidade3));
+
+        estadoRepository.saveAll(Arrays.asList(estado1, estado2));
+        cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
+
     }
 }
