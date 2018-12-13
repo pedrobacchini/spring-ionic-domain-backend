@@ -1,13 +1,8 @@
 package com.github.pedrobacchini.springionicdomain;
 
-import com.github.pedrobacchini.springionicdomain.domain.Categoria;
-import com.github.pedrobacchini.springionicdomain.domain.Cidade;
-import com.github.pedrobacchini.springionicdomain.domain.Estado;
-import com.github.pedrobacchini.springionicdomain.domain.Produto;
-import com.github.pedrobacchini.springionicdomain.repository.CategoriaRepository;
-import com.github.pedrobacchini.springionicdomain.repository.CidadeRepository;
-import com.github.pedrobacchini.springionicdomain.repository.EstadoRepository;
-import com.github.pedrobacchini.springionicdomain.repository.ProdutoRepository;
+import com.github.pedrobacchini.springionicdomain.domain.*;
+import com.github.pedrobacchini.springionicdomain.enums.TipoCliente;
+import com.github.pedrobacchini.springionicdomain.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,15 +17,21 @@ public class SpringIonicDomainApplication implements CommandLineRunner {
     private final ProdutoRepository produtoRepository;
     private final EstadoRepository estadoRepository;
     private final CidadeRepository cidadeRepository;
+    private final EnderecoRepository enderecoRepository;
+    private final ClienteRepository clienteRepository;
 
     public SpringIonicDomainApplication(CategoriaRepository categoriaRepository,
                                         ProdutoRepository produtoRepository,
                                         EstadoRepository estadoRepository,
-                                        CidadeRepository cidadeRepository) {
+                                        CidadeRepository cidadeRepository,
+                                        EnderecoRepository enderecoRepository,
+                                        ClienteRepository clienteRepository) {
         this.categoriaRepository = categoriaRepository;
         this.produtoRepository = produtoRepository;
         this.estadoRepository = estadoRepository;
         this.cidadeRepository = cidadeRepository;
+        this.enderecoRepository = enderecoRepository;
+        this.clienteRepository = clienteRepository;
     }
 
     public static void main(String[] args) {
@@ -69,5 +70,17 @@ public class SpringIonicDomainApplication implements CommandLineRunner {
         estadoRepository.saveAll(Arrays.asList(estado1, estado2));
         cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 
+        Cliente cliente1 = new Cliente("maria", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA);
+        cliente1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+        Endereco endereco1 = new Endereco("Rua Flores",
+                "300", "Apto 203",
+                "Jardim", "38220834", cliente1, cidade1);
+        Endereco endereco2 = new Endereco("Avenida Matos",
+                "105","Sala 800",
+                "Centro", "38777012", cliente1, cidade2);
+        cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
+
+        clienteRepository.save(cliente1);
+        enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
     }
 }
