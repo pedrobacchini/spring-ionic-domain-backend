@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.pedrobacchini.springionicdomain.enums.TipoCliente;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ public class Cliente implements Serializable {
     private String email;
     private String CpfOuCnpj;
     private Integer tipoCliente;
+    @JsonManagedReference
     @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos = new ArrayList<>();
     @ElementCollection

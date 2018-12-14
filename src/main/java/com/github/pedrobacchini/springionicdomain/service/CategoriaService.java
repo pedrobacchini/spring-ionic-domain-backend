@@ -10,9 +10,7 @@ public class CategoriaService {
 
     private final CategoriaRepository categoriaRepository;
 
-    public CategoriaService(CategoriaRepository categoriaRepository) {
-        this.categoriaRepository = categoriaRepository;
-    }
+    public CategoriaService(CategoriaRepository categoriaRepository) { this.categoriaRepository = categoriaRepository; }
 
     public Categoria buscarPeloID(Integer id) {
         return categoriaRepository.findById(id)

@@ -14,9 +14,7 @@ public class CategoriaResource {
 
     private final CategoriaService categoriaService;
 
-    public CategoriaResource(CategoriaService categoriaService) {
-        this.categoriaService = categoriaService;
-    }
+    public CategoriaResource(CategoriaService categoriaService) { this.categoriaService = categoriaService; }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarCategoria(@PathVariable Integer id) {
