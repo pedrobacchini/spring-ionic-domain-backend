@@ -1,14 +1,18 @@
 package com.github.pedrobacchini.springionicdomain;
 
 import com.github.pedrobacchini.springionicdomain.domain.*;
+import com.github.pedrobacchini.springionicdomain.enums.EstadoPagamento;
 import com.github.pedrobacchini.springionicdomain.enums.TipoCliente;
 import com.github.pedrobacchini.springionicdomain.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 
 @SpringBootApplication
 public class SpringIonicDomainApplication implements CommandLineRunner {
@@ -19,19 +23,25 @@ public class SpringIonicDomainApplication implements CommandLineRunner {
     private final CidadeRepository cidadeRepository;
     private final EnderecoRepository enderecoRepository;
     private final ClienteRepository clienteRepository;
+    private final PedidoRepository pedidoRepository;
+    private final PagamentoRepository pagamentoRepository;
 
     public SpringIonicDomainApplication(CategoriaRepository categoriaRepository,
                                         ProdutoRepository produtoRepository,
                                         EstadoRepository estadoRepository,
                                         CidadeRepository cidadeRepository,
                                         EnderecoRepository enderecoRepository,
-                                        ClienteRepository clienteRepository) {
+                                        ClienteRepository clienteRepository,
+                                        PedidoRepository pedidoRepository,
+                                        PagamentoRepository pagamentoRepository) {
         this.categoriaRepository = categoriaRepository;
         this.produtoRepository = produtoRepository;
         this.estadoRepository = estadoRepository;
         this.cidadeRepository = cidadeRepository;
         this.enderecoRepository = enderecoRepository;
         this.clienteRepository = clienteRepository;
+        this.pedidoRepository = pedidoRepository;
+        this.pagamentoRepository = pagamentoRepository;
     }
 
     public static void main(String[] args) {
@@ -82,5 +92,30 @@ public class SpringIonicDomainApplication implements CommandLineRunner {
 
         clienteRepository.save(cliente1);
         enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
+
+        SimpleDateFormat formatDiaHora = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        SimpleDateFormat formatDia = new SimpleDateFormat("dd-MM-yyyy");
+        Date instante1 = new Date(), instante2 = new Date(), dataVencimento = new Date();
+        try {
+            instante1 = formatDiaHora.parse("30-09-0217 10:32");
+            instante2 = formatDiaHora.parse("10-10-2017 19:35");
+            dataVencimento = formatDia.parse("20-10-2017");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Pedido pedido1 = new Pedido(instante1, endereco1, cliente1);
+        Pagamento pagamentoComCartao = new PagamentoComCartao(EstadoPagamento.QUITADO, pedido1, 6);
+        pedido1.setPagamento(pagamentoComCartao);
+
+        Pedido pedido2 = new Pedido(instante2, endereco2, cliente1);
+        Pagamento pagamentoComBoleto = new PagamentoComBoleto(EstadoPagamento.PENDENTE, pedido2, dataVencimento, null);
+        pedido2.setPagamento(pagamentoComBoleto);
+
+        pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
+        pagamentoRepository.saveAll(Arrays.asList(pagamentoComBoleto, pagamentoComCartao));
+
+        cliente1.getPedidos().addAll(Arrays.asList(pedido1, pedido2));
+        clienteRepository.save(cliente1);
     }
 }
