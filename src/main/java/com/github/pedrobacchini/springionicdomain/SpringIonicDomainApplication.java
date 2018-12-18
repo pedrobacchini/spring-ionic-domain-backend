@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 
 @SpringBootApplication
 public class SpringIonicDomainApplication implements CommandLineRunner {
@@ -25,6 +26,7 @@ public class SpringIonicDomainApplication implements CommandLineRunner {
     private final ClienteRepository clienteRepository;
     private final PedidoRepository pedidoRepository;
     private final PagamentoRepository pagamentoRepository;
+    private final ItemPedidoRepository itemPedidoRepository;
 
     public SpringIonicDomainApplication(CategoriaRepository categoriaRepository,
                                         ProdutoRepository produtoRepository,
@@ -33,7 +35,8 @@ public class SpringIonicDomainApplication implements CommandLineRunner {
                                         EnderecoRepository enderecoRepository,
                                         ClienteRepository clienteRepository,
                                         PedidoRepository pedidoRepository,
-                                        PagamentoRepository pagamentoRepository) {
+                                        PagamentoRepository pagamentoRepository,
+                                        ItemPedidoRepository itemPedidoRepository) {
         this.categoriaRepository = categoriaRepository;
         this.produtoRepository = produtoRepository;
         this.estadoRepository = estadoRepository;
@@ -42,6 +45,7 @@ public class SpringIonicDomainApplication implements CommandLineRunner {
         this.clienteRepository = clienteRepository;
         this.pedidoRepository = pedidoRepository;
         this.pagamentoRepository = pagamentoRepository;
+        this.itemPedidoRepository = itemPedidoRepository;
     }
 
     public static void main(String[] args) {
@@ -115,7 +119,20 @@ public class SpringIonicDomainApplication implements CommandLineRunner {
         pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
         pagamentoRepository.saveAll(Arrays.asList(pagamentoComBoleto, pagamentoComCartao));
 
-        cliente1.getPedidos().addAll(Arrays.asList(pedido1, pedido2));
-        clienteRepository.save(cliente1);
+//        cliente1.getPedidos().addAll(Arrays.asList(pedido1, pedido2));
+//        clienteRepository.save(cliente1);
+
+        ItemPedido itemPedido1 = new ItemPedido(pedido1, produto1, 0D, 1, 2000D);
+        ItemPedido itemPedido2 = new ItemPedido(pedido1, produto3, 0D, 2, 80D);
+        pedido1.getItens().addAll(Arrays.asList(itemPedido1, itemPedido2));
+
+        ItemPedido itemPedido3 = new ItemPedido(pedido2, produto2, 100D, 1, 800D);
+        pedido2.getItens().add(itemPedido3);
+
+        produto1.getItens().add(itemPedido1);
+        produto2.getItens().add(itemPedido3);
+        produto3.getItens().add(itemPedido2);
+
+        itemPedidoRepository.saveAll(Arrays.asList(itemPedido1, itemPedido2, itemPedido3));
     }
 }

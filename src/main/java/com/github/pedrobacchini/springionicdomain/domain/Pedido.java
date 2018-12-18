@@ -2,8 +2,7 @@ package com.github.pedrobacchini.springionicdomain.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class Pedido implements Serializable {
@@ -21,7 +20,8 @@ public class Pedido implements Serializable {
     private Cliente cliente;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
     private Pagamento pagamento;
-//    private List<ItemPedido> itens = new ArrayList<>();
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<ItemPedido> itens = new HashSet<>();
 
     public Pedido() { }
 
@@ -71,13 +71,13 @@ public class Pedido implements Serializable {
         this.pagamento = pagamento;
     }
 
-//    public List<ItemPedido> getItens() {
-//        return itens;
-//    }
-//
-//    public void setItens(List<ItemPedido> itens) {
-//        this.itens = itens;
-//    }
+    public Set<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(Set<ItemPedido> itens) {
+        this.itens = itens;
+    }
 
     @Override
     public boolean equals(Object o) {
