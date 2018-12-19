@@ -1,7 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,13 +22,11 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "endereco_id")
     private Endereco enderecoDeEntrega;
 
-    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
-    @JsonManagedReference
     private Pagamento pagamento;
 
     @OneToMany(mappedBy = "id.pedido")

@@ -1,6 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.pedrobacchini.springionicdomain.enums.EstadoPagamento;
 
 import javax.persistence.*;
@@ -18,7 +18,7 @@ public abstract class Pagamento implements Serializable {
 
     private Integer estado;
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId
