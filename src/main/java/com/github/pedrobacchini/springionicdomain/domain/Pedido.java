@@ -1,5 +1,8 @@
 package com.github.pedrobacchini.springionicdomain.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -8,18 +11,27 @@ import java.util.*;
 public class Pedido implements Serializable {
 
     private static final long serialVersionUID = -2014723447993124458L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date instante;
+
     @ManyToOne
     @JoinColumn(name = "endereco_id")
     private Endereco enderecoDeEntrega;
+
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
+    @JsonManagedReference
     private Pagamento pagamento;
+
     @OneToMany(mappedBy = "id.pedido")
     private Set<ItemPedido> itens = new HashSet<>();
 

@@ -12,10 +12,13 @@ import java.util.Objects;
 public class Estado implements Serializable {
 
     private static final long serialVersionUID = 3291895837516514823L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String nome;
+
     @JsonBackReference
     @OneToMany(mappedBy = "estado")
     private List<Cidade> cidades = new ArrayList<>();

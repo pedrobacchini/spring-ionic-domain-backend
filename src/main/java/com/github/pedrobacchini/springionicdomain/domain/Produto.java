@@ -1,6 +1,7 @@
 package com.github.pedrobacchini.springionicdomain.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,11 +11,15 @@ import java.util.*;
 public class Produto implements Serializable {
 
     private static final long serialVersionUID = 1688803395305483614L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String nome;
+
     private Double preco;
+
 //    Fala para o serializador json que a referencia vai vim pela classe de associacao
     @JsonBackReference
     @ManyToMany
@@ -22,6 +27,8 @@ public class Produto implements Serializable {
             joinColumns = @JoinColumn(name = "produto_id"),
             inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     private List<Categoria> categorias = new ArrayList<>();
+
+    @JsonIgnore
     @OneToMany(mappedBy = "id.produto")
     private Set<ItemPedido> itens = new HashSet<>();
 
@@ -33,6 +40,7 @@ public class Produto implements Serializable {
         this.preco = preco;
     }
 
+    @JsonIgnore
     public List<Pedido> getPedidos() {
         List<Pedido> listaPedidos = new ArrayList<>();
         for (ItemPedido itemPedido : itens) {

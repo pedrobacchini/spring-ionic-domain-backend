@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.github.pedrobacchini.springionicdomain.enums.EstadoPagamento;
 
 import javax.persistence.*;
@@ -11,9 +12,13 @@ import java.util.Objects;
 public abstract class Pagamento implements Serializable {
 
     private static final long serialVersionUID = -1561739326966717779L;
+
     @Id
     private Integer id;
+
     private Integer estado;
+
+    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId

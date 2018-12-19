@@ -16,7 +16,9 @@ public class Categoria implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String nome;
+
 //    Fala para o serializador json que a refenrencia vai ser priorizada por essa classe
     @JsonManagedReference
     @ManyToMany(mappedBy = "categorias")

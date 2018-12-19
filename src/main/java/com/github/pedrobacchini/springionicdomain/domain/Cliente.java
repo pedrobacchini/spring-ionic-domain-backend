@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.pedrobacchini.springionicdomain.enums.TipoCliente;
 
@@ -11,19 +12,28 @@ import java.util.*;
 public class Cliente implements Serializable {
 
     private static final long serialVersionUID = 8699782015209935297L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String nome;
+
     private String email;
+
     private String CpfOuCnpj;
+
     private Integer tipoCliente;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos = new ArrayList<>();
+
     @ElementCollection
     @CollectionTable(name = "TELEFONE")
     private Set<String> telefones = new HashSet<>();
+
+    @JsonBackReference
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 

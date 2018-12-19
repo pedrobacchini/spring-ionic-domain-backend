@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 public class PagamentoComCartao extends Pagamento {
 
     private static final long serialVersionUID = 2622178677977813411L;
+
     private Integer numeroDeParcelas;
 
     public PagamentoComCartao() { }
