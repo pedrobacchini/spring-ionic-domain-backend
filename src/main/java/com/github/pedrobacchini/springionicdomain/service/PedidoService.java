@@ -12,7 +12,7 @@ public class PedidoService {
 
     public PedidoService(PedidoRepository pedidoRepository) { this.pedidoRepository = pedidoRepository; }
 
-    public Pedido buscarPeloID(Integer id) {
+    public Pedido find(Integer id) {
         return pedidoRepository.findById(id)
                 .orElseThrow(() ->
                         new ObjectNotFoundException("Objeto não encontrado! Id: " + id

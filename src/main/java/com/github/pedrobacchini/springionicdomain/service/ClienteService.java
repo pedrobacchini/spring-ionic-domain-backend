@@ -12,7 +12,7 @@ public class ClienteService {
 
     public ClienteService(ClienteRepository clienteRepository) { this.clienteRepository = clienteRepository; }
 
-    public Cliente buscarPeloID(Integer id) {
+    public Cliente find(Integer id) {
         return clienteRepository.findById(id)
                 .orElseThrow(() ->
                         new ObjectNotFoundException("Objeto não encontrado! Id: " + id

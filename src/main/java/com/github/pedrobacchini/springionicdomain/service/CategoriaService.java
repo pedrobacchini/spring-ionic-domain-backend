@@ -12,7 +12,7 @@ public class CategoriaService {
 
     public CategoriaService(CategoriaRepository categoriaRepository) { this.categoriaRepository = categoriaRepository; }
 
-    public Categoria buscarPeloID(Integer id) {
+    public Categoria find(Integer id) {
         return categoriaRepository.findById(id)
                 .orElseThrow(() ->
                         new ObjectNotFoundException("Objeto não encontrado! Id: " + id
@@ -22,6 +22,11 @@ public class CategoriaService {
     public Categoria insert(Categoria categoria) {
         //Para ter certeza que e um atualização e nao uma inserção
         categoria.setId(null);
+        return categoriaRepository.save(categoria);
+    }
+
+    public Categoria update(Categoria categoria) {
+        find(categoria.getId());
         return categoriaRepository.save(categoria);
     }
 }

@@ -17,8 +17,8 @@ public class ClienteResource {
     public ClienteResource(ClienteService clienteService) { this.clienteService = clienteService; }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscarCliente(@PathVariable Integer id) {
-        Cliente cliente = clienteService.buscarPeloID(id);
+    public ResponseEntity<Cliente> find(@PathVariable Integer id) {
+        Cliente cliente = clienteService.find(id);
         return ResponseEntity.ok(cliente);
     }
 }
