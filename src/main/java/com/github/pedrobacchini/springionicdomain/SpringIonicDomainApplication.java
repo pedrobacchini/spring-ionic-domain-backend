@@ -94,10 +94,10 @@ public class SpringIonicDomainApplication implements CommandLineRunner {
 
         Cliente cliente1 = new Cliente(null, "maria", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA);
         cliente1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
-        Endereco endereco1 = new Endereco("Rua Flores",
+        Endereco endereco1 = new Endereco(null, "Rua Flores",
                 "300", "Apto 203",
                 "Jardim", "38220834", cliente1, cidade1);
-        Endereco endereco2 = new Endereco("Avenida Matos",
+        Endereco endereco2 = new Endereco(null, "Avenida Matos",
                 "105","Sala 800",
                 "Centro", "38777012", cliente1, cidade2);
         cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));

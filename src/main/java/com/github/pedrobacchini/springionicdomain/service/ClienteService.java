@@ -1,10 +1,16 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
+import com.github.pedrobacchini.springionicdomain.domain.Cidade;
 import com.github.pedrobacchini.springionicdomain.domain.Cliente;
+import com.github.pedrobacchini.springionicdomain.domain.Endereco;
 import com.github.pedrobacchini.springionicdomain.dto.ClienteDTO;
+import com.github.pedrobacchini.springionicdomain.dto.ClienteNewDTO;
+import com.github.pedrobacchini.springionicdomain.enums.TipoCliente;
 import com.github.pedrobacchini.springionicdomain.repository.ClienteRepository;
+import com.github.pedrobacchini.springionicdomain.repository.EnderecoRepository;
 import com.github.pedrobacchini.springionicdomain.service.exception.DataIntegrityException;
 import com.github.pedrobacchini.springionicdomain.service.exception.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,14 +23,27 @@ import java.util.List;
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
+    private final EnderecoRepository enderecoRepository;
 
-    public ClienteService(ClienteRepository clienteRepository) { this.clienteRepository = clienteRepository; }
+    @Autowired
+    public ClienteService(ClienteRepository clienteRepository, EnderecoRepository enderecoRepository) {
+        this.clienteRepository = clienteRepository;
+        this.enderecoRepository = enderecoRepository;
+    }
 
     public Cliente find(Integer id) {
         return clienteRepository.findById(id)
                 .orElseThrow(() ->
                         new ObjectNotFoundException("Objeto não encontrado! Id: " + id
                             + ", Tipo: " + Cliente.class.getName()));
+    }
+
+    public Cliente insert(Cliente cliente) {
+        //Para ter certeza que e um atualização e nao uma inserção
+        cliente.setId(null);
+        cliente = clienteRepository.save(cliente);
+        enderecoRepository.saveAll(cliente.getEnderecos());
+        return cliente;
     }
 
     public Cliente update(Cliente cliente) {
@@ -53,6 +72,36 @@ public class ClienteService {
 
     public Cliente fromDTO(ClienteDTO clienteDTO) {
         return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null);
+    }
+
+    public Cliente fromDTO(ClienteNewDTO clienteNewDTO) {
+        Cliente cliente = new Cliente(
+                null,
+                clienteNewDTO.getNome(),
+                clienteNewDTO.getEmail(),
+                clienteNewDTO.getCpfOuCnpj(),
+                TipoCliente.toEnum(clienteNewDTO.getTipoCliente()));
+
+        Cidade cidade = new Cidade(clienteNewDTO.getCidadeId(), null, null);
+
+        Endereco endereco = new Endereco(
+                null,
+                clienteNewDTO.getLogradouro(),
+                clienteNewDTO.getNumero(),
+                clienteNewDTO.getComplemento(),
+                clienteNewDTO.getBairro(),
+                clienteNewDTO.getCep(),
+                cliente,
+                cidade);
+        cliente.getEnderecos().add(endereco);
+        cliente.getTelefones().add(clienteNewDTO.getTelefone1());
+        if(clienteNewDTO.getTelefone2()!=null) {
+            cliente.getTelefones().add(clienteNewDTO.getTelefone2());
+        }
+        if(clienteNewDTO.getTelefone3()!=null) {
+            cliente.getTelefones().add(clienteNewDTO.getTelefone3());
+        }
+        return cliente;
     }
 
     private void updateData(Cliente clientPersisted, Cliente cliente) {

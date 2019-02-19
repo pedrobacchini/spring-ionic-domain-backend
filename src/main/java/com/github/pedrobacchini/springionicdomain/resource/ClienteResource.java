@@ -2,12 +2,15 @@ package com.github.pedrobacchini.springionicdomain.resource;
 
 import com.github.pedrobacchini.springionicdomain.domain.Cliente;
 import com.github.pedrobacchini.springionicdomain.dto.ClienteDTO;
+import com.github.pedrobacchini.springionicdomain.dto.ClienteNewDTO;
 import com.github.pedrobacchini.springionicdomain.service.ClienteService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,15 @@ public class ClienteResource {
     public ResponseEntity<Cliente> find(@PathVariable Integer id) {
         Cliente cliente = clienteService.find(id);
         return ResponseEntity.ok(cliente);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO clienteNewDTO) {
+        Cliente cliente = clienteService.fromDTO(clienteNewDTO);
+        cliente = clienteService.insert(cliente);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(cliente.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
