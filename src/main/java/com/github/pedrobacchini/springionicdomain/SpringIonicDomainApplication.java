@@ -117,11 +117,11 @@ public class SpringIonicDomainApplication implements CommandLineRunner {
         }
 
         Pedido pedido1 = new Pedido(instante1, endereco1, cliente1);
-        Pagamento pagamentoComCartao = new PagamentoComCartao(EstadoPagamento.QUITADO, pedido1, 6);
+        Pagamento pagamentoComCartao = new PagamentoComCartao(null, EstadoPagamento.QUITADO, pedido1, 6);
         pedido1.setPagamento(pagamentoComCartao);
 
         Pedido pedido2 = new Pedido(instante2, endereco2, cliente1);
-        Pagamento pagamentoComBoleto = new PagamentoComBoleto(EstadoPagamento.PENDENTE, pedido2, dataVencimento, null);
+        Pagamento pagamentoComBoleto = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, pedido2, dataVencimento, null);
         pedido2.setPagamento(pagamentoComBoleto);
 
         pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));

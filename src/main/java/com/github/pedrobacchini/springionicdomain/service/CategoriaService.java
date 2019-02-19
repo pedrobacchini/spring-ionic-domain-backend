@@ -34,7 +34,8 @@ public class CategoriaService {
     }
 
     public Categoria update(Categoria categoria) {
-        find(categoria.getId());
+        Categoria categoriaPersisted = find(categoria.getId());
+        updateData(categoriaPersisted, categoria);
         return categoriaRepository.save(categoria);
     }
 
@@ -47,9 +48,7 @@ public class CategoriaService {
         }
     }
 
-    public List<Categoria> findAll() {
-        return categoriaRepository.findAll();
-    }
+    public List<Categoria> findAll() { return categoriaRepository.findAll(); }
 
     public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
@@ -58,5 +57,9 @@ public class CategoriaService {
 
     public Categoria fromDTO(CategoriaDTO categoriaDTO) {
         return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
+    }
+
+    private void updateData(Categoria categoriaPersisted, Categoria categoria) {
+        categoriaPersisted.setNome(categoria.getNome());
     }
 }
