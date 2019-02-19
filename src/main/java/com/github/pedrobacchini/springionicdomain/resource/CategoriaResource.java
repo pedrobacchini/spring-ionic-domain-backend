@@ -3,6 +3,7 @@ package com.github.pedrobacchini.springionicdomain.resource;
 import com.github.pedrobacchini.springionicdomain.domain.Categoria;
 import com.github.pedrobacchini.springionicdomain.dto.CategoriaDTO;
 import com.github.pedrobacchini.springionicdomain.service.CategoriaService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -53,5 +54,15 @@ public class CategoriaResource {
         List<Categoria> categorias = categoriaService.findAll();
         List<CategoriaDTO> categoriasDTO = categorias.stream().map(CategoriaDTO::new).collect(Collectors.toList());
         return ResponseEntity.ok(categoriasDTO);
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<CategoriaDTO>> findPage(@RequestParam(defaultValue = "0") Integer page,
+                                                    @RequestParam(defaultValue = "24") Integer linesPerPage,
+                                                    @RequestParam(defaultValue = "nome") String orderBy,
+                                                    @RequestParam(defaultValue = "ASC") String direction) {
+        Page<Categoria> categoriaPage = categoriaService.findPage(page, linesPerPage, orderBy, direction);
+        Page<CategoriaDTO> categoriaDTOPage = categoriaPage.map(CategoriaDTO::new);
+        return ResponseEntity.ok(categoriaDTOPage);
     }
 }

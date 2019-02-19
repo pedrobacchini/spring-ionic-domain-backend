@@ -5,6 +5,9 @@ import com.github.pedrobacchini.springionicdomain.service.exception.DataIntegrit
 import com.github.pedrobacchini.springionicdomain.service.exception.ObjectNotFoundException;
 import com.github.pedrobacchini.springionicdomain.repository.CategoriaRepository;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,5 +48,10 @@ public class CategoriaService {
 
     public List<Categoria> findAll() {
         return categoriaRepository.findAll();
+    }
+
+    public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return categoriaRepository.findAll(pageRequest);
     }
 }
