@@ -1,6 +1,7 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
 import com.github.pedrobacchini.springionicdomain.domain.Categoria;
+import com.github.pedrobacchini.springionicdomain.dto.CategoriaDTO;
 import com.github.pedrobacchini.springionicdomain.service.exception.DataIntegrityException;
 import com.github.pedrobacchini.springionicdomain.service.exception.ObjectNotFoundException;
 import com.github.pedrobacchini.springionicdomain.repository.CategoriaRepository;
@@ -53,5 +54,9 @@ public class CategoriaService {
     public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return categoriaRepository.findAll(pageRequest);
+    }
+
+    public Categoria fromDTO(CategoriaDTO categoriaDTO) {
+        return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
     }
 }
