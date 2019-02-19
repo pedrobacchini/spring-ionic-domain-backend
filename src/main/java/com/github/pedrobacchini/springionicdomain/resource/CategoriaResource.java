@@ -1,12 +1,16 @@
 package com.github.pedrobacchini.springionicdomain.resource;
 
 import com.github.pedrobacchini.springionicdomain.domain.Categoria;
+import com.github.pedrobacchini.springionicdomain.dto.CategoriaDTO;
 import com.github.pedrobacchini.springionicdomain.service.CategoriaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/categoria")
@@ -42,5 +46,12 @@ public class CategoriaResource {
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         categoriaService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<CategoriaDTO>> findAll() {
+        List<Categoria> categorias = categoriaService.findAll();
+        List<CategoriaDTO> categoriasDTO = categorias.stream().map(CategoriaDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(categoriasDTO);
     }
 }
