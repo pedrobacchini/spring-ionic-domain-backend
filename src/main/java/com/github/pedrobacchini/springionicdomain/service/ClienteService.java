@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class ClienteService {
                             + ", Tipo: " + Cliente.class.getName()));
     }
 
+    @Transactional
     public Cliente insert(Cliente cliente) {
         //Para ter certeza que e um atualização e nao uma inserção
         cliente.setId(null);
@@ -80,7 +82,7 @@ public class ClienteService {
                 clienteNewDTO.getNome(),
                 clienteNewDTO.getEmail(),
                 clienteNewDTO.getCpfOuCnpj(),
-                TipoCliente.toEnum(clienteNewDTO.getTipoCliente()));
+                TipoCliente.toEnum(clienteNewDTO.getTipo()));
 
         Cidade cidade = new Cidade(clienteNewDTO.getCidadeId(), null, null);
 
