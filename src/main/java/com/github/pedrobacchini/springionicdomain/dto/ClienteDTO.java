@@ -1,12 +1,14 @@
 package com.github.pedrobacchini.springionicdomain.dto;
 
 import com.github.pedrobacchini.springionicdomain.domain.Cliente;
+import com.github.pedrobacchini.springionicdomain.service.validation.ClienteUpdate;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
+@ClienteUpdate
 public class ClienteDTO implements Serializable {
 
     private static final long serialVersionUID = 7783415683050919389L;

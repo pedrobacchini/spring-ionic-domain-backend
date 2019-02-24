@@ -14,7 +14,6 @@ import java.util.Optional;
 
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
 
-
    private final ClienteRepository clienteRepository;
 
    public ClienteInsertValidator(ClienteRepository clienteRepository) {
@@ -26,8 +25,6 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 
    public boolean isValid(ClienteNewDTO clienteNewDTO, ConstraintValidatorContext context) {
       List<FieldMessage> list = new ArrayList<>();
-
-      System.out.println(clienteNewDTO.toString());
 
       if(clienteNewDTO.getTipo().equals(TipoCliente.PESSOAFISICA.getCod())
               && !Utils.isValidCPF(clienteNewDTO.getCpfOuCnpj())){
