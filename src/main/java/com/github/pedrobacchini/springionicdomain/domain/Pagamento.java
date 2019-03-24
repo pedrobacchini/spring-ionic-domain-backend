@@ -1,6 +1,7 @@
 package com.github.pedrobacchini.springionicdomain.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.github.pedrobacchini.springionicdomain.enums.EstadoPagamento;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@type")
 public abstract class Pagamento implements Serializable {
 
     private static final long serialVersionUID = -1561739326966717779L;

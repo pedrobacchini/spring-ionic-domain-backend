@@ -1,10 +1,12 @@
 package com.github.pedrobacchini.springionicdomain.domain;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.github.pedrobacchini.springionicdomain.enums.EstadoPagamento;
 
 import javax.persistence.Entity;
 
 @Entity
+@JsonTypeName("PagamentoComCartao")
 public class PagamentoComCartao extends Pagamento {
 
     private static final long serialVersionUID = 2622178677977813411L;
