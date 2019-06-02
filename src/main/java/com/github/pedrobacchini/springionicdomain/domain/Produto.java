@@ -47,45 +47,25 @@ public class Produto implements Serializable {
         return listaPedidos;
     }
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public void setId(Integer id) { this.id = id; }
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public Double getPreco() {
-        return preco;
-    }
+    public Double getPreco() { return preco; }
 
-    public void setPreco(Double preco) {
-        this.preco = preco;
-    }
+    public void setPreco(Double preco) { this.preco = preco; }
 
-    public List<Categoria> getCategorias() {
-        return categorias;
-    }
+    public List<Categoria> getCategorias() { return categorias; }
 
-    public void setCategorias(List<Categoria> categorias) {
-        this.categorias = categorias;
-    }
+    public void setCategorias(List<Categoria> categorias) { this.categorias = categorias; }
 
-    public Set<ItemPedido> getItens() {
-        return itens;
-    }
+    public Set<ItemPedido> getItens() { return itens; }
 
-    public void setItens(Set<ItemPedido> itens) {
-        this.itens = itens;
-    }
+    public void setItens(Set<ItemPedido> itens) { this.itens = itens; }
 
     @Override
     public boolean equals(Object o) {
@@ -96,7 +76,5 @@ public class Produto implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+    public int hashCode() { return Objects.hash(id); }
 }

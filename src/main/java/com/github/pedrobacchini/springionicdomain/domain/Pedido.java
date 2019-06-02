@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Entity
@@ -40,57 +42,31 @@ public class Pedido implements Serializable {
         this.cliente = cliente;
     }
 
-    public double getValorTotal() {
-        return itens.stream().mapToDouble(ItemPedido::getSubTotal).sum();
-    }
+    public double getValorTotal() { return itens.stream().mapToDouble(ItemPedido::getSubTotal).sum(); }
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public void setId(Integer id) { this.id = id; }
 
-    public Date getInstante() {
-        return instante;
-    }
+    public Date getInstante() { return instante; }
 
-    public void setInstante(Date instante) {
-        this.instante = instante;
-    }
+    public void setInstante(Date instante) { this.instante = instante; }
 
-    public Endereco getEnderecoDeEntrega() {
-        return enderecoDeEntrega;
-    }
+    public Endereco getEnderecoDeEntrega() { return enderecoDeEntrega; }
 
-    public void setEnderecoDeEntrega(Endereco enderecoDeEntrega) {
-        this.enderecoDeEntrega = enderecoDeEntrega;
-    }
+    public void setEnderecoDeEntrega(Endereco enderecoDeEntrega) { this.enderecoDeEntrega = enderecoDeEntrega; }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
+    public Cliente getCliente() { return cliente; }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
 
-    public Pagamento getPagamento() {
-        return pagamento;
-    }
+    public Pagamento getPagamento() { return pagamento; }
 
-    public void setPagamento(Pagamento pagamento) {
-        this.pagamento = pagamento;
-    }
+    public void setPagamento(Pagamento pagamento) { this.pagamento = pagamento; }
 
-    public Set<ItemPedido> getItens() {
-        return itens;
-    }
+    public Set<ItemPedido> getItens() { return itens; }
 
-    public void setItens(Set<ItemPedido> itens) {
-        this.itens = itens;
-    }
+    public void setItens(Set<ItemPedido> itens) { this.itens = itens; }
 
     @Override
     public boolean equals(Object o) {
@@ -101,7 +77,26 @@ public class Pedido implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public int hashCode() { return Objects.hash(id); }
+
+    @Override
+    public String toString() {
+        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd//MM/yyy hh:mm:ss");
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Pedido número: ");
+        sb.append(getId());
+        sb.append(", Instante: ");
+        sb.append(sdf.format(getInstante()));
+        sb.append(", Cliente: ");
+        sb.append(getCliente().getNome());
+        sb.append(", Situação do pagamento: ");
+        sb.append(getPagamento().getEstado().getDescricao());
+        sb.append("\nDetalhes:\n");
+        for (ItemPedido ip: getItens())
+            sb.append(ip.toString());
+        sb.append("Valor total: ");
+        sb.append(nf.format(getValorTotal()));
+        return sb.toString();
     }
 }

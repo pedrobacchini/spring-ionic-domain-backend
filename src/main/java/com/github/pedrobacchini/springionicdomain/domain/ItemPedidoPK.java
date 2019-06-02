@@ -19,21 +19,13 @@ public class ItemPedidoPK implements Serializable {
     @JoinColumn(name = "produto_id")
     private Produto produto;
 
-    public Pedido getPedido() {
-        return pedido;
-    }
+    public Pedido getPedido() { return pedido; }
 
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
-    }
+    public void setPedido(Pedido pedido) { this.pedido = pedido; }
 
-    public Produto getProduto() {
-        return produto;
-    }
+    public Produto getProduto() { return produto; }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
+    public void setProduto(Produto produto) { this.produto = produto; }
 
     @Override
     public boolean equals(Object o) {
@@ -45,7 +37,5 @@ public class ItemPedidoPK implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(pedido, produto);
-    }
+    public int hashCode() { return Objects.hash(pedido, produto); }
 }

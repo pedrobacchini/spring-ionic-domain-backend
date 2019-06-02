@@ -48,73 +48,39 @@ public class Endereco implements Serializable {
         this.cidade = cidade;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+    public static long getSerialVersionUID() { return serialVersionUID; }
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public void setId(Integer id) { this.id = id; }
 
-    public String getLogradouro() {
-        return logradouro;
-    }
+    public String getLogradouro() { return logradouro; }
 
-    public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
-    }
+    public void setLogradouro(String logradouro) { this.logradouro = logradouro; }
 
-    public String getNumero() {
-        return numero;
-    }
+    public String getNumero() { return numero; }
 
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
+    public void setNumero(String numero) { this.numero = numero; }
 
-    public String getComplemento() {
-        return complemento;
-    }
+    public String getComplemento() { return complemento; }
 
-    public void setComplemento(String complemento) {
-        this.complemento = complemento;
-    }
+    public void setComplemento(String complemento) { this.complemento = complemento; }
 
-    public String getBairro() {
-        return bairro;
-    }
+    public String getBairro() { return bairro; }
 
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
-    }
+    public void setBairro(String bairro) { this.bairro = bairro; }
 
-    public String getCep() {
-        return cep;
-    }
+    public String getCep() { return cep; }
 
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
+    public void setCep(String cep) { this.cep = cep; }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
+    public Cliente getCliente() { return cliente; }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
 
-    public Cidade getCidade() {
-        return cidade;
-    }
+    public Cidade getCidade() { return cidade; }
 
-    public void setCidade(Cidade cidade) {
-        this.cidade = cidade;
-    }
+    public void setCidade(Cidade cidade) { this.cidade = cidade; }
 
     @Override
     public boolean equals(Object o) {
@@ -125,7 +91,5 @@ public class Endereco implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+    public int hashCode() { return Objects.hash(id); }
 }

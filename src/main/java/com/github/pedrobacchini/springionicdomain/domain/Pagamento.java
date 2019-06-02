@@ -34,29 +34,17 @@ public abstract class Pagamento implements Serializable {
         this.pedido = pedido;
     }
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public void setId(Integer id) { this.id = id; }
 
-    public EstadoPagamento getEstado() {
-        return EstadoPagamento.toEnum(estado);
-    }
+    public EstadoPagamento getEstado() { return EstadoPagamento.toEnum(estado); }
 
-    public void setEstado(EstadoPagamento estado) {
-        this.estado = estado.getCod();
-    }
+    public void setEstado(EstadoPagamento estado) { this.estado = estado.getCod(); }
 
-    public Pedido getPedido() {
-        return pedido;
-    }
+    public Pedido getPedido() { return pedido; }
 
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
-    }
+    public void setPedido(Pedido pedido) { this.pedido = pedido; }
 
     @Override
     public boolean equals(Object o) {
@@ -67,7 +55,5 @@ public abstract class Pagamento implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+    public int hashCode() { return Objects.hash(id); }
 }

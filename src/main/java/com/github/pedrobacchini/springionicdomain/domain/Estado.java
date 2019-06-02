@@ -30,29 +30,17 @@ public class Estado implements Serializable {
         this.nome = nome;
     }
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public void setId(Integer id) { this.id = id; }
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public List<Cidade> getCidades() {
-        return cidades;
-    }
+    public List<Cidade> getCidades() { return cidades; }
 
-    public void setCidades(List<Cidade> cidades) {
-        this.cidades = cidades;
-    }
+    public void setCidades(List<Cidade> cidades) { this.cidades = cidades; }
 
     @Override
     public boolean equals(Object o) {
@@ -63,8 +51,5 @@ public class Estado implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-
-        return Objects.hash(id);
-    }
+    public int hashCode() { return Objects.hash(id); }
 }

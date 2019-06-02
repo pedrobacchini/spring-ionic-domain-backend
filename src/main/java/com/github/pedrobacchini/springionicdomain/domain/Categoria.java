@@ -27,29 +27,17 @@ public class Categoria implements Serializable {
         this.nome = nome;
     }
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public void setId(Integer id) { this.id = id; }
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public List<Produto> getProdutos() {
-        return produtos;
-    }
+    public List<Produto> getProdutos() { return produtos; }
 
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
-    }
+    public void setProdutos(List<Produto> produtos) { this.produtos = produtos; }
 
     @Override
     public boolean equals(Object o) {
@@ -60,7 +48,5 @@ public class Categoria implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+    public int hashCode() { return Objects.hash(id); }
 }
