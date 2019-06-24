@@ -15,6 +15,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,11 +26,15 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
     private final EnderecoRepository enderecoRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public ClienteService(ClienteRepository clienteRepository, EnderecoRepository enderecoRepository) {
+    public ClienteService(ClienteRepository clienteRepository,
+                          EnderecoRepository enderecoRepository,
+                          BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.clienteRepository = clienteRepository;
         this.enderecoRepository = enderecoRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public Cliente find(Integer id) {
@@ -73,7 +78,13 @@ public class ClienteService {
     }
 
     public Cliente fromDTO(ClienteDTO clienteDTO) {
-        return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null);
+        return new Cliente(
+                clienteDTO.getId(),
+                clienteDTO.getNome(),
+                clienteDTO.getEmail(),
+                null,
+                null,
+                null);
     }
 
     public Cliente fromDTO(ClienteNewDTO clienteNewDTO) {
@@ -82,7 +93,8 @@ public class ClienteService {
                 clienteNewDTO.getNome(),
                 clienteNewDTO.getEmail(),
                 clienteNewDTO.getCpfOuCnpj(),
-                TipoCliente.toEnum(clienteNewDTO.getTipo()));
+                TipoCliente.toEnum(clienteNewDTO.getTipo()),
+                bCryptPasswordEncoder.encode(clienteNewDTO.getSenha()));
 
         Cidade cidade = new Cidade(clienteNewDTO.getCidadeId(), null, null);
 
