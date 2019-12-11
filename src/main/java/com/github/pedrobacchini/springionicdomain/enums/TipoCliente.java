@@ -22,13 +22,13 @@ public enum TipoCliente {
     }
 
     public static TipoCliente toEnum(Integer cod) {
-        if(cod==null)
+        if (cod == null)
             return null;
         for (TipoCliente value : TipoCliente.values()) {
-            if(value.getCod().equals(cod)){
+            if (value.getCod().equals(cod)) {
                 return value;
             }
         }
-        throw new IllegalArgumentException("Id Inválido "+cod);
+        throw new IllegalArgumentException("Id Inválido " + cod);
     }
 }

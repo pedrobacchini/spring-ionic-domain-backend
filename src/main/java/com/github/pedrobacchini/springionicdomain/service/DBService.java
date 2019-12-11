@@ -122,7 +122,7 @@ public class DBService {
                 "300", "Apto 203",
                 "Jardim", "38220834", cliente1, cidade1);
         Endereco endereco2 = new Endereco(null, "Avenida Matos",
-                "105","Sala 800",
+                "105", "Sala 800",
                 "Centro", "38777012", cliente1, cidade2);
 
         cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));

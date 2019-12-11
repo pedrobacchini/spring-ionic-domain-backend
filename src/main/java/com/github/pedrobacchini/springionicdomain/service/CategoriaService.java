@@ -2,9 +2,9 @@ package com.github.pedrobacchini.springionicdomain.service;
 
 import com.github.pedrobacchini.springionicdomain.domain.Categoria;
 import com.github.pedrobacchini.springionicdomain.dto.CategoriaDTO;
+import com.github.pedrobacchini.springionicdomain.repository.CategoriaRepository;
 import com.github.pedrobacchini.springionicdomain.service.exception.DataIntegrityException;
 import com.github.pedrobacchini.springionicdomain.service.exception.ObjectNotFoundException;
-import com.github.pedrobacchini.springionicdomain.repository.CategoriaRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,7 +43,7 @@ public class CategoriaService {
         find(id);
         try {
             categoriaRepository.deleteById(id);
-        } catch(DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException("Não e possivel excluir uma categoria que possui produtos");
         }
     }

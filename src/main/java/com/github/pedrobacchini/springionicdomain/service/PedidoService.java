@@ -53,7 +53,7 @@ public class PedidoService {
         pedido.setCliente(clienteService.find(pedido.getCliente().getId()));
         pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);
         pedido.getPagamento().setPedido(pedido);
-        if(pedido.getPagamento() instanceof PagamentoComBoleto){
+        if (pedido.getPagamento() instanceof PagamentoComBoleto) {
             PagamentoComBoleto pagamentoComBoleto = (PagamentoComBoleto) pedido.getPagamento();
             boletoService.preencherPagamentoComBoleto(pagamentoComBoleto, pedido.getInstante());
         }

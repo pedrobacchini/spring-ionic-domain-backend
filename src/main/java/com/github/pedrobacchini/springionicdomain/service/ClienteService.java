@@ -41,7 +41,7 @@ public class ClienteService {
         return clienteRepository.findById(id)
                 .orElseThrow(() ->
                         new ObjectNotFoundException("Objeto não encontrado! Id: " + id
-                            + ", Tipo: " + Cliente.class.getName()));
+                                + ", Tipo: " + Cliente.class.getName()));
     }
 
     @Transactional
@@ -63,7 +63,7 @@ public class ClienteService {
         find(id);
         try {
             clienteRepository.deleteById(id);
-        } catch(DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException("Não e possivel excluir cliente porque há pedidos relacionados");
         }
     }
@@ -109,10 +109,10 @@ public class ClienteService {
                 cidade);
         cliente.getEnderecos().add(endereco);
         cliente.getTelefones().add(clienteNewDTO.getTelefone1());
-        if(clienteNewDTO.getTelefone2()!=null) {
+        if (clienteNewDTO.getTelefone2() != null) {
             cliente.getTelefones().add(clienteNewDTO.getTelefone2());
         }
-        if(clienteNewDTO.getTelefone3()!=null) {
+        if (clienteNewDTO.getTelefone3() != null) {
             cliente.getTelefones().add(clienteNewDTO.getTelefone3());
         }
         return cliente;

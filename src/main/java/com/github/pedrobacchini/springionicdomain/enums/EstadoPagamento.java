@@ -1,6 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.enums;
 
-public enum  EstadoPagamento {
+public enum EstadoPagamento {
 
     PENDENTE(1, "Pendente"),
     QUITADO(2, "Quitado"),
@@ -23,13 +23,13 @@ public enum  EstadoPagamento {
     }
 
     public static EstadoPagamento toEnum(Integer cod) {
-        if(cod==null)
+        if (cod == null)
             return null;
         for (EstadoPagamento value : EstadoPagamento.values()) {
-            if(value.getCod().equals(cod)){
+            if (value.getCod().equals(cod)) {
                 return value;
             }
         }
-        throw new IllegalArgumentException("Id Inválido "+cod);
+        throw new IllegalArgumentException("Id Inválido " + cod);
     }
 }
