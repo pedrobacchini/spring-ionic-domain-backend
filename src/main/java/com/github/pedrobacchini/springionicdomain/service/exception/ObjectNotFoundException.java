@@ -1,10 +1,12 @@
 package com.github.pedrobacchini.springionicdomain.service.exception;
 
-public class ObjectNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
 
-    private static final long serialVersionUID = 5228691309606396999L;
+public class ObjectNotFoundException extends ApiException {
 
-    public ObjectNotFoundException(String message) { super(message); }
+    private static final long serialVersionUID = 4934003192057535303L;
 
-    public ObjectNotFoundException(String message, Throwable cause) { super(message, cause); }
+    public ObjectNotFoundException(String message) { super(message, HttpStatus.NOT_FOUND); }
+
+    public ObjectNotFoundException(String message, Throwable cause) { super(message, cause, HttpStatus.NOT_FOUND); }
 }

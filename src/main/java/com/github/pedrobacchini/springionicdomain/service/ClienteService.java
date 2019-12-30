@@ -5,9 +5,12 @@ import com.github.pedrobacchini.springionicdomain.domain.Cliente;
 import com.github.pedrobacchini.springionicdomain.domain.Endereco;
 import com.github.pedrobacchini.springionicdomain.dto.ClienteDTO;
 import com.github.pedrobacchini.springionicdomain.dto.ClienteNewDTO;
+import com.github.pedrobacchini.springionicdomain.enums.Perfil;
 import com.github.pedrobacchini.springionicdomain.enums.TipoCliente;
 import com.github.pedrobacchini.springionicdomain.repository.ClienteRepository;
 import com.github.pedrobacchini.springionicdomain.repository.EnderecoRepository;
+import com.github.pedrobacchini.springionicdomain.security.ClientUserDetails;
+import com.github.pedrobacchini.springionicdomain.service.exception.AuthorizationException;
 import com.github.pedrobacchini.springionicdomain.service.exception.DataIntegrityException;
 import com.github.pedrobacchini.springionicdomain.service.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +34,12 @@ public class ClienteService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Cliente find(Integer id) {
+
+        Optional<ClientUserDetails> authenticated = UserService.authenticated();
+
+        if (!authenticated.isPresent() || !authenticated.get().hasRole(Perfil.ADMIN) && !id.equals(authenticated.get().getId())) {
+            throw new AuthorizationException("Acesso Negado");
+        }
         return clienteRepository.findById(id)
                 .orElseThrow(() ->
                         new ObjectNotFoundException("Objeto não encontrado! Id: " + id

@@ -18,9 +18,6 @@ public class ClientUserDetails implements UserDetails {
     private String senha;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public ClientUserDetails() {
-    }
-
     public ClientUserDetails(int id, String email, String senha, Set<Perfil> perfis) {
         this.id = id;
         this.email = email;
@@ -30,42 +27,30 @@ public class ClientUserDetails implements UserDetails {
                 .collect(Collectors.toSet());
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
+    public Collection<? extends GrantedAuthority> getAuthorities() { return authorities; }
 
     @Override
-    public String getPassword() {
-        return senha;
-    }
+    public String getPassword() { return senha; }
 
     @Override
-    public String getUsername() {
-        return email;
-    }
+    public String getUsername() { return email; }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+    public boolean isAccountNonExpired() { return true; }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+    public boolean isAccountNonLocked() { return true; }
 
     @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+    public boolean isCredentialsNonExpired() { return true; }
 
     @Override
-    public boolean isEnabled() {
-        return true;
+    public boolean isEnabled() { return true; }
+
+    public boolean hasRole(Perfil admin) {
+        return authorities.contains(new SimpleGrantedAuthority(admin.getDescricao()));
     }
 }
