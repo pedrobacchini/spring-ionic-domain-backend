@@ -1,6 +1,7 @@
 package com.github.pedrobacchini.springionicdomain.config;
 
 import com.github.pedrobacchini.springionicdomain.security.JWTAuthenticationFilter;
+import com.github.pedrobacchini.springionicdomain.security.JWTAuthorizationFilter;
 import com.github.pedrobacchini.springionicdomain.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -55,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
                 .anyRequest().authenticated();
         http.addFilter(new JWTAuthenticationFilter(jwtUtil, authenticationManager()));
+        http.addFilter(new JWTAuthorizationFilter(jwtUtil, userDetailsService, authenticationManager()));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
