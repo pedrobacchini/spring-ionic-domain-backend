@@ -2,6 +2,7 @@ package com.github.pedrobacchini.springionicdomain.service;
 
 import com.github.pedrobacchini.springionicdomain.domain.*;
 import com.github.pedrobacchini.springionicdomain.enums.EstadoPagamento;
+import com.github.pedrobacchini.springionicdomain.enums.Perfil;
 import com.github.pedrobacchini.springionicdomain.enums.TipoCliente;
 import com.github.pedrobacchini.springionicdomain.repository.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -109,26 +110,38 @@ public class DBService {
         estadoRepository.saveAll(Arrays.asList(estado1, estado2));
         cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 
-        Cliente cliente1 = new Cliente(null,
+        Cliente mariaSilva = new Cliente(null,
                 "Maria Silva",
                 "pedroheinrique@gmail.com",
                 "36378912377",
                 TipoCliente.PESSOAFISICA,
                 bCryptPasswordEncoder.encode("123"));
+        mariaSilva.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 
-        cliente1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+        Cliente anaCosta = new Cliente(null,
+                "Ana Costa",
+                "pedrobacchini@outlook.com",
+                "68813512244",
+                TipoCliente.PESSOAFISICA,
+                bCryptPasswordEncoder.encode("123"));
+        anaCosta.getTelefones().add("66996193389");
+        anaCosta.addPerfil(Perfil.ADMIN);
 
         Endereco endereco1 = new Endereco(null, "Rua Flores",
                 "300", "Apto 203",
-                "Jardim", "38220834", cliente1, cidade1);
+                "Jardim", "38220834", mariaSilva, cidade1);
         Endereco endereco2 = new Endereco(null, "Avenida Matos",
                 "105", "Sala 800",
-                "Centro", "38777012", cliente1, cidade2);
+                "Centro", "38777012", mariaSilva, cidade2);
+        Endereco endereco3 = new Endereco(null, "Avenida Floriano",
+                "2106", null,
+                "Centro", "5646546", anaCosta, cidade2);
 
-        cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
+        mariaSilva.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
+        anaCosta.getEnderecos().add(endereco3);
 
-        clienteRepository.save(cliente1);
-        enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
+        clienteRepository.saveAll(Arrays.asList(mariaSilva, anaCosta));
+        enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2, endereco3));
 
         SimpleDateFormat formatDiaHora = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         SimpleDateFormat formatDia = new SimpleDateFormat("dd-MM-yyyy");
@@ -138,11 +151,11 @@ public class DBService {
         instante2 = formatDiaHora.parse("10-10-2017 19:35");
         dataVencimento = formatDia.parse("20-10-2017");
 
-        Pedido pedido1 = new Pedido(instante1, endereco1, cliente1);
+        Pedido pedido1 = new Pedido(instante1, endereco1, mariaSilva);
         Pagamento pagamentoComCartao = new PagamentoComCartao(null, EstadoPagamento.QUITADO, pedido1, 6);
         pedido1.setPagamento(pagamentoComCartao);
 
-        Pedido pedido2 = new Pedido(instante2, endereco2, cliente1);
+        Pedido pedido2 = new Pedido(instante2, endereco2, mariaSilva);
         Pagamento pagamentoComBoleto = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, pedido2, dataVencimento, null);
         pedido2.setPagamento(pagamentoComBoleto);
 

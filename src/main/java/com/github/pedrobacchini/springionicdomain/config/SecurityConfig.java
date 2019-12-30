@@ -29,7 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_MATCHERS_GET = {
             "/produto/**",
-            "/categoria/**"
+            "/categoria/**",
+            "/cliente/**"
     };
 
     @Override
@@ -39,7 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             http.headers().frameOptions().disable();
         }
 
-        //Para ativar o cors corsConfigurationSource chamar cors()
+        //Para ativar o cors corsConfigurationSource chamar cors() desativa o csrf pois o servidor não é vuneravel a
+        //esse tipo de ataque pois não armazena sessão
         http.cors().and().csrf().disable();
 
         http.authorizeRequests()
