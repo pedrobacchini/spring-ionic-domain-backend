@@ -2,6 +2,7 @@ package com.github.pedrobacchini.springionicdomain.resource;
 
 import com.github.pedrobacchini.springionicdomain.domain.Pedido;
 import com.github.pedrobacchini.springionicdomain.service.PedidoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -10,12 +11,11 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/pedido")
 public class PedidoResource {
 
     private final PedidoService pedidoService;
-
-    public PedidoResource(PedidoService pedidoService) { this.pedidoService = pedidoService; }
 
     @GetMapping("/{id}")
     public ResponseEntity<Pedido> find(@PathVariable Integer id) {

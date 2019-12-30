@@ -5,6 +5,7 @@ import com.github.pedrobacchini.springionicdomain.dto.CategoriaDTO;
 import com.github.pedrobacchini.springionicdomain.repository.CategoriaRepository;
 import com.github.pedrobacchini.springionicdomain.service.exception.DataIntegrityException;
 import com.github.pedrobacchini.springionicdomain.service.exception.ObjectNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,11 +15,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CategoriaService {
 
     private final CategoriaRepository categoriaRepository;
-
-    public CategoriaService(CategoriaRepository categoriaRepository) { this.categoriaRepository = categoriaRepository; }
 
     public Categoria find(Integer id) {
         return categoriaRepository.findById(id)

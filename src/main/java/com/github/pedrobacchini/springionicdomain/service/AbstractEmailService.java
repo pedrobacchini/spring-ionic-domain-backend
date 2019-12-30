@@ -1,6 +1,7 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
 import com.github.pedrobacchini.springionicdomain.domain.Pedido;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,6 +18,7 @@ Padrão template method:
 Classe abstrata que define a preparação do email de confirmação de pedido, essa implementação vai ser
 compartilhada pelas subclasses que apenas definirão o comportamento especifico de envio de email.
  */
+@RequiredArgsConstructor
 public abstract class AbstractEmailService implements EmailService {
 
     @Value("${default.sender}")
@@ -24,11 +26,6 @@ public abstract class AbstractEmailService implements EmailService {
 
     private final TemplateEngine templateEngine;
     private final JavaMailSender javaMailSender;
-
-    protected AbstractEmailService(TemplateEngine templateEngine, JavaMailSender javaMailSender) {
-        this.templateEngine = templateEngine;
-        this.javaMailSender = javaMailSender;
-    }
 
     @Override
     public void sendOrderConfirmationEmail(Pedido pedido) {

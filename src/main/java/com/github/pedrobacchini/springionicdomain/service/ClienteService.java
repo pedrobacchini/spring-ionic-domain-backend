@@ -10,7 +10,7 @@ import com.github.pedrobacchini.springionicdomain.repository.ClienteRepository;
 import com.github.pedrobacchini.springionicdomain.repository.EnderecoRepository;
 import com.github.pedrobacchini.springionicdomain.service.exception.DataIntegrityException;
 import com.github.pedrobacchini.springionicdomain.service.exception.ObjectNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,20 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
     private final EnderecoRepository enderecoRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    public ClienteService(ClienteRepository clienteRepository,
-                          EnderecoRepository enderecoRepository,
-                          BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.clienteRepository = clienteRepository;
-        this.enderecoRepository = enderecoRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
 
     public Cliente find(Integer id) {
         return clienteRepository.findById(id)

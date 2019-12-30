@@ -4,6 +4,7 @@ import com.github.pedrobacchini.springionicdomain.domain.Cliente;
 import com.github.pedrobacchini.springionicdomain.dto.ClienteDTO;
 import com.github.pedrobacchini.springionicdomain.dto.ClienteNewDTO;
 import com.github.pedrobacchini.springionicdomain.service.ClienteService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +16,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/cliente")
 public class ClienteResource {
 
     private final ClienteService clienteService;
-
-    public ClienteResource(ClienteService clienteService) { this.clienteService = clienteService; }
 
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> find(@PathVariable Integer id) {

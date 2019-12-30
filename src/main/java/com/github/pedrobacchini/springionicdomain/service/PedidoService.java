@@ -7,12 +7,14 @@ import com.github.pedrobacchini.springionicdomain.repository.ItemPedidoRepositor
 import com.github.pedrobacchini.springionicdomain.repository.PagamentoRepository;
 import com.github.pedrobacchini.springionicdomain.repository.PedidoRepository;
 import com.github.pedrobacchini.springionicdomain.service.exception.ObjectNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 @Service
+@RequiredArgsConstructor
 public class PedidoService {
 
     private final BoletoService boletoService;
@@ -22,22 +24,6 @@ public class PedidoService {
     private final ProdutoService produtoService;
     private final ClienteService clienteService;
     private final EmailService emailService;
-
-    public PedidoService(PedidoRepository pedidoRepository,
-                         BoletoService boletoService,
-                         PagamentoRepository pagamentoRepository,
-                         ItemPedidoRepository itemPedidoRepository,
-                         ProdutoService produtoService,
-                         ClienteService clienteService,
-                         EmailService emailService) {
-        this.pedidoRepository = pedidoRepository;
-        this.boletoService = boletoService;
-        this.pagamentoRepository = pagamentoRepository;
-        this.itemPedidoRepository = itemPedidoRepository;
-        this.produtoService = produtoService;
-        this.clienteService = clienteService;
-        this.emailService = emailService;
-    }
 
     public Pedido find(Integer id) {
         return pedidoRepository.findById(id)

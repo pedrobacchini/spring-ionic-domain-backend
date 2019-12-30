@@ -5,6 +5,7 @@ import com.github.pedrobacchini.springionicdomain.enums.EstadoPagamento;
 import com.github.pedrobacchini.springionicdomain.enums.Perfil;
 import com.github.pedrobacchini.springionicdomain.enums.TipoCliente;
 import com.github.pedrobacchini.springionicdomain.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 @Service
+@RequiredArgsConstructor
 public class DBService {
 
     private final CategoriaRepository categoriaRepository;
@@ -26,28 +28,6 @@ public class DBService {
     private final PagamentoRepository pagamentoRepository;
     private final ItemPedidoRepository itemPedidoRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    public DBService(CategoriaRepository categoriaRepository,
-                     ProdutoRepository produtoRepository,
-                     EstadoRepository estadoRepository,
-                     CidadeRepository cidadeRepository,
-                     EnderecoRepository enderecoRepository,
-                     ClienteRepository clienteRepository,
-                     PedidoRepository pedidoRepository,
-                     PagamentoRepository pagamentoRepository,
-                     ItemPedidoRepository itemPedidoRepository,
-                     BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.categoriaRepository = categoriaRepository;
-        this.produtoRepository = produtoRepository;
-        this.estadoRepository = estadoRepository;
-        this.cidadeRepository = cidadeRepository;
-        this.enderecoRepository = enderecoRepository;
-        this.clienteRepository = clienteRepository;
-        this.pedidoRepository = pedidoRepository;
-        this.pagamentoRepository = pagamentoRepository;
-        this.itemPedidoRepository = itemPedidoRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
 
     public void instantiateTestDatabase() throws ParseException {
 

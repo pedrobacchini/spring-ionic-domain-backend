@@ -3,6 +3,7 @@ package com.github.pedrobacchini.springionicdomain.resource;
 import com.github.pedrobacchini.springionicdomain.domain.Categoria;
 import com.github.pedrobacchini.springionicdomain.dto.CategoriaDTO;
 import com.github.pedrobacchini.springionicdomain.service.CategoriaService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/categoria")
 public class CategoriaResource {
 
     private final CategoriaService categoriaService;
-
-    public CategoriaResource(CategoriaService categoriaService) { this.categoriaService = categoriaService; }
 
     @GetMapping("/{id}")
     public ResponseEntity<Categoria> find(@PathVariable Integer id) {

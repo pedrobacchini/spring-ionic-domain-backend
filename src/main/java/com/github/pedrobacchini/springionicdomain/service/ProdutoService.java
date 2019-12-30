@@ -5,6 +5,7 @@ import com.github.pedrobacchini.springionicdomain.domain.Produto;
 import com.github.pedrobacchini.springionicdomain.repository.CategoriaRepository;
 import com.github.pedrobacchini.springionicdomain.repository.ProdutoRepository;
 import com.github.pedrobacchini.springionicdomain.service.exception.ObjectNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -13,16 +14,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
     private final CategoriaRepository categoriaRepository;
-
-    public ProdutoService(ProdutoRepository produtoRepository,
-                          CategoriaRepository categoriaRepository) {
-        this.produtoRepository = produtoRepository;
-        this.categoriaRepository = categoriaRepository;
-    }
 
     public Produto find(Integer id) {
         return produtoRepository.findById(id)

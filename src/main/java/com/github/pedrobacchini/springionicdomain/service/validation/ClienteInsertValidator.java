@@ -5,6 +5,7 @@ import com.github.pedrobacchini.springionicdomain.dto.ClienteNewDTO;
 import com.github.pedrobacchini.springionicdomain.enums.TipoCliente;
 import com.github.pedrobacchini.springionicdomain.repository.ClienteRepository;
 import com.github.pedrobacchini.springionicdomain.resource.exception.FieldMessage;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -12,13 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
 
     private final ClienteRepository clienteRepository;
-
-    public ClienteInsertValidator(ClienteRepository clienteRepository) {
-        this.clienteRepository = clienteRepository;
-    }
 
     public void initialize(ClienteInsert constraint) {
     }
