@@ -61,8 +61,6 @@ public class Produto implements Serializable {
 
     public List<Categoria> getCategorias() { return categorias; }
 
-    public void setCategorias(List<Categoria> categorias) { this.categorias = categorias; }
-
     public Set<ItemPedido> getItens() { return itens; }
 
     public void setItens(Set<ItemPedido> itens) { this.itens = itens; }

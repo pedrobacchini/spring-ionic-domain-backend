@@ -51,25 +51,13 @@ public class DBService {
         Produto produto10 = new Produto(null, "Pendente", 180D);
         Produto produto11 = new Produto(null, "Shampoo", 90D);
 
-        categoria1.getProdutos().addAll(Arrays.asList(produto1, produto2, produto3));
-        categoria2.getProdutos().addAll(Arrays.asList(produto2, produto4));
-        categoria3.getProdutos().addAll(Arrays.asList(produto5, produto6));
-        categoria4.getProdutos().addAll(Arrays.asList(produto1, produto2, produto3, produto7));
-        categoria5.getProdutos().add(produto8);
-        categoria6.getProdutos().addAll(Arrays.asList(produto9, produto10));
-        categoria7.getProdutos().add(produto11);
-
-        produto1.getCategorias().addAll(Arrays.asList(categoria1, categoria4));
-        produto2.getCategorias().addAll(Arrays.asList(categoria1, categoria2, categoria4));
-        produto3.getCategorias().addAll(Arrays.asList(categoria1, categoria4));
-        produto4.getCategorias().add(categoria2);
-        produto5.getCategorias().add(categoria3);
-        produto6.getCategorias().add(categoria3);
-        produto7.getCategorias().add(categoria4);
-        produto8.getCategorias().add(categoria5);
-        produto9.getCategorias().add(categoria6);
-        produto10.getCategorias().add(categoria6);
-        produto11.getCategorias().add(categoria7);
+        categoria1.addAllProduto(Arrays.asList(produto1, produto2, produto3));
+        categoria2.addAllProduto(Arrays.asList(produto2, produto4));
+        categoria3.addAllProduto(Arrays.asList(produto5, produto6));
+        categoria4.addAllProduto(Arrays.asList(produto1, produto2, produto3, produto7));
+        categoria5.addProduto(produto8);
+        categoria6.addAllProduto(Arrays.asList(produto9, produto10));
+        categoria7.addProduto(produto11);
 
         categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2, categoria3, categoria4,
                 categoria5, categoria6, categoria7));
