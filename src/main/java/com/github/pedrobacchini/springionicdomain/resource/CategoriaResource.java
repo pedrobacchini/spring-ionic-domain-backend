@@ -6,6 +6,7 @@ import com.github.pedrobacchini.springionicdomain.service.CategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -28,6 +29,7 @@ public class CategoriaResource {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO categoriaDTO) {
         Categoria categoria = categoriaService.fromDTO(categoriaDTO);
         categoria = categoriaService.insert(categoria);
@@ -37,6 +39,7 @@ public class CategoriaResource {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO categoriaDTO, @PathVariable Integer id) {
 //        para garantir que voce esta atualizando a categoria correta
         Categoria categoria = categoriaService.fromDTO(categoriaDTO);
@@ -46,6 +49,7 @@ public class CategoriaResource {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         categoriaService.delete(id);
         return ResponseEntity.noContent().build();

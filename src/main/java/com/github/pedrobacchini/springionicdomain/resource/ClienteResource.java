@@ -7,6 +7,7 @@ import com.github.pedrobacchini.springionicdomain.service.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -47,12 +48,14 @@ public class ClienteResource {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         clienteService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping()
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<ClienteDTO>> findAll() {
         List<Cliente> clientes = clienteService.findAll();
         List<ClienteDTO> clientesDTO = clientes.stream().map(ClienteDTO::new).collect(Collectors.toList());
@@ -60,6 +63,7 @@ public class ClienteResource {
     }
 
     @GetMapping("/page")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Page<ClienteDTO>> findPage(@RequestParam(defaultValue = "0") Integer page,
                                                      @RequestParam(defaultValue = "24") Integer linesPerPage,
                                                      @RequestParam(defaultValue = "nome") String orderBy,
