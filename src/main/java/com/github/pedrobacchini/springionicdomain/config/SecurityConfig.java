@@ -1,5 +1,7 @@
 package com.github.pedrobacchini.springionicdomain.config;
 
+import com.github.pedrobacchini.springionicdomain.security.JWTAuthenticationFilter;
+import com.github.pedrobacchini.springionicdomain.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -22,6 +25,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final JWTUtil jwtUtil;
     private final Environment environment;
     private final UserDetailsService userDetailsService;
 
@@ -50,8 +54,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
                 .anyRequest().authenticated();
-
+        http.addFilter(new JWTAuthenticationFilter(jwtUtil, authenticationManager()));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
 
     @Bean
