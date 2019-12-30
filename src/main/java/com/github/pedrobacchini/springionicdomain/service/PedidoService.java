@@ -1,17 +1,24 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
+import com.github.pedrobacchini.springionicdomain.domain.Cliente;
 import com.github.pedrobacchini.springionicdomain.domain.PagamentoComBoleto;
 import com.github.pedrobacchini.springionicdomain.domain.Pedido;
 import com.github.pedrobacchini.springionicdomain.enums.EstadoPagamento;
 import com.github.pedrobacchini.springionicdomain.repository.ItemPedidoRepository;
 import com.github.pedrobacchini.springionicdomain.repository.PagamentoRepository;
 import com.github.pedrobacchini.springionicdomain.repository.PedidoRepository;
+import com.github.pedrobacchini.springionicdomain.security.ClientUserDetails;
+import com.github.pedrobacchini.springionicdomain.service.exception.AuthorizationException;
 import com.github.pedrobacchini.springionicdomain.service.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +37,15 @@ public class PedidoService {
                 .orElseThrow(() ->
                         new ObjectNotFoundException("Objeto não encontrado! Id: " + id
                                 + ", Tipo: " + Pedido.class.getName()));
+    }
+
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        Optional<ClientUserDetails> authenticated = UserService.authenticated();
+        if(!authenticated.isPresent())
+            throw new AuthorizationException("Acesso Negado");
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Cliente cliente = clienteService.find(authenticated.get().getId());
+        return pedidoRepository.findByCliente(cliente, pageRequest);
     }
 
     @Transactional
