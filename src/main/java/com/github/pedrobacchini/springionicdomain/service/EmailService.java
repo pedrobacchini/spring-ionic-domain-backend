@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
+import com.github.pedrobacchini.springionicdomain.domain.Cliente;
 import com.github.pedrobacchini.springionicdomain.domain.Pedido;
 import org.springframework.mail.SimpleMailMessage;
 
@@ -16,7 +17,9 @@ public interface EmailService {
 
     void sendEmail(SimpleMailMessage simpleMailMessage);
 
-    void sendOrderConfirmationHtmlEmail(Pedido pedido);
+    void sendNewPasswordEmail(Cliente cliente, String newPass);
 
     void sendHtmlEmail(MimeMessage mimeMessage);
+
+    void sendOrderConfirmationHtmlEmail(Pedido pedido);
 }

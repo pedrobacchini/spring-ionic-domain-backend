@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
+import com.github.pedrobacchini.springionicdomain.domain.Cliente;
 import com.github.pedrobacchini.springionicdomain.domain.Pedido;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,16 +35,6 @@ public abstract class AbstractEmailService implements EmailService {
     }
 
 
-    private SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido pedido) {
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(pedido.getCliente().getEmail());
-        simpleMailMessage.setFrom(sender);
-        simpleMailMessage.setSubject("Pedido Confirmado! Código: " + pedido.getId());
-        simpleMailMessage.setSentDate(new Date(System.currentTimeMillis()));
-        simpleMailMessage.setText(pedido.toString());
-        return simpleMailMessage;
-    }
-
     @Override
     public void sendOrderConfirmationHtmlEmail(Pedido pedido) {
         try {
@@ -54,8 +45,33 @@ public abstract class AbstractEmailService implements EmailService {
         }
     }
 
-    private MimeMessage prepareMimeMessageFromPedido(Pedido pedido) throws MessagingException {
+    @Override
+    public void sendNewPasswordEmail(Cliente cliente, String newPass) {
+        SimpleMailMessage simpleMailMessage = prepareNewPasswordEmail(cliente, newPass);
+        sendEmail(simpleMailMessage);
+    }
 
+    protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(cliente.getEmail());
+        simpleMailMessage.setFrom(sender);
+        simpleMailMessage.setSubject("Solicitação de nova senha");
+        simpleMailMessage.setSentDate(new Date(System.currentTimeMillis()));
+        simpleMailMessage.setText("Nova Senha: " + newPass);
+        return simpleMailMessage;
+    }
+
+    protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido pedido) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(pedido.getCliente().getEmail());
+        simpleMailMessage.setFrom(sender);
+        simpleMailMessage.setSubject("Pedido Confirmado! Código: " + pedido.getId());
+        simpleMailMessage.setSentDate(new Date(System.currentTimeMillis()));
+        simpleMailMessage.setText(pedido.toString());
+        return simpleMailMessage;
+    }
+
+    protected MimeMessage prepareMimeMessageFromPedido(Pedido pedido) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         mimeMessageHelper.setTo(pedido.getCliente().getEmail());
@@ -63,11 +79,10 @@ public abstract class AbstractEmailService implements EmailService {
         mimeMessageHelper.setSubject("Pedido confirmado! Código " + pedido.getId());
         mimeMessageHelper.setSentDate(new Date(System.currentTimeMillis()));
         mimeMessageHelper.setText(htmlFromTemplatePedido(pedido), true);
-
         return mimeMessage;
     }
 
-    private String htmlFromTemplatePedido(Pedido pedido) {
+    protected String htmlFromTemplatePedido(Pedido pedido) {
         Context context = new Context();
         context.setVariable("pedido", pedido);
         return templateEngine.process("email/confirmacaoPedido", context);

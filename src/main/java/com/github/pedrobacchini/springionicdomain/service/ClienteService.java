@@ -70,9 +70,7 @@ public class ClienteService {
         }
     }
 
-    public List<Cliente> findAll() {
-        return clienteRepository.findAll();
-    }
+    public List<Cliente> findAll() { return clienteRepository.findAll(); }
 
     public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
