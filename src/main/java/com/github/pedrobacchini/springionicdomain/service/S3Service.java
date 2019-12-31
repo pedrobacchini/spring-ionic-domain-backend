@@ -2,6 +2,7 @@ package com.github.pedrobacchini.springionicdomain.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.github.pedrobacchini.springionicdomain.service.exception.FileException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +31,7 @@ public class S3Service {
             String contentFile = multipartFile.getContentType();
             return uploadFile(inputStream, fileName, contentFile);
         } catch (IOException e) {
-            throw new RuntimeException("Erro de IO: " + e.getMessage());
+            throw new FileException("Erro de IO: " + e.getMessage());
         }
     }
 
@@ -43,7 +44,7 @@ public class S3Service {
             log.info("Upload finalizado");
             return amazonS3.getUrl(bucket, fileName).toURI();
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Erro ao converter URL para URI");
+            throw new FileException("Erro ao converter URL para URI");
         }
     }
 }
