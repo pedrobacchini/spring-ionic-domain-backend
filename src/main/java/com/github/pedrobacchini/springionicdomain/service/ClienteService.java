@@ -21,7 +21,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +31,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClienteService {
 
+    private final S3Service s3Service;
     private final ClienteRepository clienteRepository;
     private final EnderecoRepository enderecoRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -116,6 +119,10 @@ public class ClienteService {
             cliente.getTelefones().add(clienteNewDTO.getTelefone3());
         }
         return cliente;
+    }
+
+    public URI uploadProfilePicture(MultipartFile multipartFile) {
+        return s3Service.uploadFile(multipartFile);
     }
 
     private void updateData(Cliente clientPersisted, Cliente cliente) {
