@@ -46,4 +46,13 @@ public class ApplicationProperties {
         private String bucket;
         private String region;
     }
+
+    @Getter
+    private final Image image = new Image();
+
+    @Getter
+    @Setter
+    public static class Image {
+        private String prefixClientProfile;
+    }
 }

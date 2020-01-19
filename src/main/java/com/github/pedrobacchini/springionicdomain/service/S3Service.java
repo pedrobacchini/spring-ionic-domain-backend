@@ -37,12 +37,15 @@ public class S3Service {
         try {
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(contentType);
+            objectMetadata.setContentLength(inputStream.available());
             log.info("Iniciando upload");
             amazonS3.putObject(applicationProperties.getS3().getBucket(), fileName, inputStream, objectMetadata);
             log.info("Upload finalizado");
             return amazonS3.getUrl(applicationProperties.getS3().getBucket(), fileName).toURI();
         } catch (URISyntaxException e) {
             throw new FileException("Erro ao converter URL para URI");
+        } catch (IOException e) {
+            throw new FileException("Erro ao determinar o tamanho do arquivo");
         }
     }
 }

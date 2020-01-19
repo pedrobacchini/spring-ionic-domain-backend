@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
+import com.github.pedrobacchini.springionicdomain.config.ApplicationProperties;
 import com.github.pedrobacchini.springionicdomain.domain.Cidade;
 import com.github.pedrobacchini.springionicdomain.domain.Cliente;
 import com.github.pedrobacchini.springionicdomain.domain.Endereco;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -32,9 +34,11 @@ import java.util.Optional;
 public class ClienteService {
 
     private final S3Service s3Service;
+    private final ImageService imageService;
     private final ClienteRepository clienteRepository;
     private final EnderecoRepository enderecoRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ApplicationProperties applicationProperties;
 
     public Cliente find(Integer id) {
 
@@ -122,13 +126,12 @@ public class ClienteService {
     }
 
     public URI uploadProfilePicture(MultipartFile multipartFile, ClientUserDetails clientUserDetails) {
-        if(clientUserDetails == null)
+        if (clientUserDetails == null)
             throw new AuthorizationException("Acesso Negado");
-        URI uri = s3Service.uploadFile(multipartFile);
-        Cliente cliente = find(clientUserDetails.getId());
-        cliente.setImageUrl(uri.toString());
-        clienteRepository.save(cliente);
-        return uri;
+
+        BufferedImage bufferedImage = imageService.getJpgImageFromFile(multipartFile);
+        String fileName = applicationProperties.getImage().getPrefixClientProfile() + clientUserDetails.getId() + ".jpg";
+        return s3Service.uploadFile(imageService.getInputStream(bufferedImage, "jpg"), fileName, multipartFile.getContentType());
     }
 
     private void updateData(Cliente clientPersisted, Cliente cliente) {
