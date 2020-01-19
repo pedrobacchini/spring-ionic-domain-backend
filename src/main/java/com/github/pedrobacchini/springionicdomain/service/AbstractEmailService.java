@@ -1,9 +1,9 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
+import com.github.pedrobacchini.springionicdomain.config.ApplicationProperties;
 import com.github.pedrobacchini.springionicdomain.domain.Cliente;
 import com.github.pedrobacchini.springionicdomain.domain.Pedido;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -22,11 +22,9 @@ compartilhada pelas subclasses que apenas definirão o comportamento especifico 
 @RequiredArgsConstructor
 public abstract class AbstractEmailService implements EmailService {
 
-    @Value("${default.sender}")
-    private String sender;
-
     private final TemplateEngine templateEngine;
     private final JavaMailSender javaMailSender;
+    private final ApplicationProperties applicationProperties;
 
     @Override
     public void sendOrderConfirmationEmail(Pedido pedido) {
@@ -54,7 +52,7 @@ public abstract class AbstractEmailService implements EmailService {
     protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(cliente.getEmail());
-        simpleMailMessage.setFrom(sender);
+        simpleMailMessage.setFrom(applicationProperties.getEmail().getDefaultSender());
         simpleMailMessage.setSubject("Solicitação de nova senha");
         simpleMailMessage.setSentDate(new Date(System.currentTimeMillis()));
         simpleMailMessage.setText("Nova Senha: " + newPass);
@@ -64,7 +62,7 @@ public abstract class AbstractEmailService implements EmailService {
     protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido pedido) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(pedido.getCliente().getEmail());
-        simpleMailMessage.setFrom(sender);
+        simpleMailMessage.setFrom(applicationProperties.getEmail().getDefaultSender());
         simpleMailMessage.setSubject("Pedido Confirmado! Código: " + pedido.getId());
         simpleMailMessage.setSentDate(new Date(System.currentTimeMillis()));
         simpleMailMessage.setText(pedido.toString());
@@ -75,7 +73,7 @@ public abstract class AbstractEmailService implements EmailService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         mimeMessageHelper.setTo(pedido.getCliente().getEmail());
-        mimeMessageHelper.setFrom(sender);
+        mimeMessageHelper.setFrom(applicationProperties.getEmail().getDefaultSender());
         mimeMessageHelper.setSubject("Pedido confirmado! Código " + pedido.getId());
         mimeMessageHelper.setSentDate(new Date(System.currentTimeMillis()));
         mimeMessageHelper.setText(htmlFromTemplatePedido(pedido), true);

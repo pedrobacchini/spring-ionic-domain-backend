@@ -26,6 +26,7 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(error.getStatus()).body(error);
     }
 
+//    Erros que podem ser lançados ao utilizar o amazonS3
     @ExceptionHandler(AmazonServiceException.class)
     public ResponseEntity<StandardError> amazonService(AmazonServiceException e) {
         HttpStatus httpStatus = HttpStatus.valueOf(e.getErrorCode());

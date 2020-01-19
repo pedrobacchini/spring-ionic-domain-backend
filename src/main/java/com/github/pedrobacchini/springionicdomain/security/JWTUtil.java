@@ -1,22 +1,20 @@
 package com.github.pedrobacchini.springionicdomain.security;
 
+import com.github.pedrobacchini.springionicdomain.config.ApplicationProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class JWTUtil {
 
-    @Value("${jwt.secret}")
-    String secret;
-
-    @Value("${jwt.expiration}")
-    Long expiration;
+    private final ApplicationProperties applicationProperties;
 
     public boolean tokenValid(String token) {
         return getClaims(token).map(claims -> {
@@ -32,14 +30,18 @@ public class JWTUtil {
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(SignatureAlgorithm.HS512, secret.getBytes())
+                .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(applicationProperties.getJwt().getExpiration())))
+                .signWith(SignatureAlgorithm.HS512, applicationProperties.getJwt().getSecret().getBytes())
                 .compact();
     }
 
     private Optional<Claims> getClaims(String token) {
         try {
-            return Optional.of(Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody());
+            return Optional.of(
+                    Jwts.parser()
+                            .setSigningKey(applicationProperties.getJwt().getSecret().getBytes())
+                            .parseClaimsJws(token).getBody()
+            );
         } catch (Exception e) {
             return Optional.empty();
         }

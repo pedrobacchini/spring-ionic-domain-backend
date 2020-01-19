@@ -3,11 +3,13 @@ package com.github.pedrobacchini.springionicdomain.resource;
 import com.github.pedrobacchini.springionicdomain.domain.Cliente;
 import com.github.pedrobacchini.springionicdomain.dto.ClienteDTO;
 import com.github.pedrobacchini.springionicdomain.dto.ClienteNewDTO;
+import com.github.pedrobacchini.springionicdomain.security.ClientUserDetails;
 import com.github.pedrobacchini.springionicdomain.service.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -44,7 +46,7 @@ public class ClienteResource {
 //        para garantir que voce esta atualizando a cliente correta
         Cliente cliente = clienteService.fromDTO(clienteDTO);
         cliente.setId(id);
-        cliente = clienteService.update(cliente);
+        clienteService.update(cliente);
         return ResponseEntity.noContent().build();
     }
 
@@ -75,8 +77,9 @@ public class ClienteResource {
     }
 
     @PostMapping("/picture")
-    public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = "file") MultipartFile file) {
-        URI uri = clienteService.uploadProfilePicture(file);
+    public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = "file") MultipartFile file,
+                                                     @AuthenticationPrincipal ClientUserDetails clientUserDetails) {
+        URI uri = clienteService.uploadProfilePicture(file, clientUserDetails);
         return ResponseEntity.created(uri).build();
     }
 }

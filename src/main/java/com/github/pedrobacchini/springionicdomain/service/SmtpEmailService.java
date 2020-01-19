@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
+import com.github.pedrobacchini.springionicdomain.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -24,8 +25,11 @@ public class SmtpEmailService extends AbstractEmailService {
     private final MailSender mailSender;
     private final JavaMailSender javaMailSender;
 
-    public SmtpEmailService(TemplateEngine templateEngine, MailSender mailSender, JavaMailSender javaMailSender) {
-        super(templateEngine, javaMailSender);
+    public SmtpEmailService(TemplateEngine templateEngine,
+                            MailSender mailSender,
+                            JavaMailSender javaMailSender,
+                            ApplicationProperties applicationProperties) {
+        super(templateEngine, javaMailSender, applicationProperties);
         this.mailSender = mailSender;
         this.javaMailSender = javaMailSender;
     }

@@ -3,6 +3,8 @@ package com.github.pedrobacchini.springionicdomain.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.pedrobacchini.springionicdomain.enums.Perfil;
 import com.github.pedrobacchini.springionicdomain.enums.TipoCliente;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,24 +17,36 @@ public class Cliente implements Serializable {
     private static final long serialVersionUID = 8699782015209935297L;
 
     @Id
+    @Getter
+    @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Getter
+    @Setter
     private String nome;
 
+    @Getter
+    @Setter
     @Column(unique = true)
     private String email;
 
+    @Getter
     private String cpfOuCnpj;
 
+    @Getter
     private Integer tipo;
 
+    @Getter
+    @Setter
     @JsonIgnore
     private String senha;
 
+    @Getter
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
 
+    @Getter
     @ElementCollection
     @CollectionTable(name = "TELEFONE")
     private Set<String> telefones = new HashSet<>();
@@ -41,13 +55,16 @@ public class Cliente implements Serializable {
     @CollectionTable(name = "PERFIS")
     private Set<Integer> perfis = new HashSet<>();
 
+    @Getter
     @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 
-    public Cliente() {
-        addPerfil(Perfil.CLIENT);
-    }
+    @Getter
+    @Setter
+    private String imageUrl;
+
+    public Cliente() { addPerfil(Perfil.CLIENT); }
 
     public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo, String senha) {
         this.id = id;
@@ -59,51 +76,9 @@ public class Cliente implements Serializable {
         addPerfil(Perfil.CLIENT);
     }
 
-    public static long getSerialVersionUID() { return serialVersionUID; }
+    public Set<Perfil> getPerfis() { return perfis.stream().map(Perfil::toEnum).collect(Collectors.toSet()); }
 
-    public Integer getId() { return id; }
-
-    public void setId(Integer id) { this.id = id; }
-
-    public String getNome() { return nome; }
-
-    public void setNome(String nome) { this.nome = nome; }
-
-    public String getEmail() { return email; }
-
-    public void setEmail(String email) { this.email = email; }
-
-    public String getCpfOuCnpj() { return cpfOuCnpj; }
-
-    public void setCpfOuCnpj(String cpfOuCnpj) { this.cpfOuCnpj = cpfOuCnpj; }
-
-    public TipoCliente getTipo() { return TipoCliente.toEnum(tipo); }
-
-    public void setTipo(TipoCliente tipo) { this.tipo = tipo.getCod(); }
-
-    public String getSenha() { return senha; }
-
-    public void setSenha(String senha) { this.senha = senha; }
-
-    public List<Endereco> getEnderecos() { return enderecos; }
-
-    public void setEnderecos(List<Endereco> enderecos) { this.enderecos = enderecos; }
-
-    public Set<String> getTelefones() { return telefones; }
-
-    public Set<Perfil> getPerfis() {
-        return perfis.stream().map(Perfil::toEnum).collect(Collectors.toSet());
-    }
-
-    public void addPerfil(Perfil perfil) {
-        perfis.add(perfil.getCod());
-    }
-
-    public void setTelefones(Set<String> telefones) { this.telefones = telefones; }
-
-    public List<Pedido> getPedidos() { return pedidos; }
-
-    public void setPedidos(List<Pedido> pedidos) { this.pedidos = pedidos; }
+    public void addPerfil(Perfil perfil) { perfis.add(perfil.getCod()); }
 
     @Override
     public boolean equals(Object o) {
