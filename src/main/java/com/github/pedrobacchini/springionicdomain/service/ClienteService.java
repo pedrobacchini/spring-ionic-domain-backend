@@ -130,7 +130,9 @@ public class ClienteService {
             throw new AuthorizationException("Acesso Negado");
 
         BufferedImage bufferedImage = imageService.getJpgImageFromFile(multipartFile);
-        String fileName = applicationProperties.getImage().getPrefixClientProfile() + clientUserDetails.getId() + ".jpg";
+        bufferedImage = imageService.cropSquare(bufferedImage);
+        bufferedImage = imageService.resize(bufferedImage, applicationProperties.getImage().getProfile().getSize());
+        String fileName = applicationProperties.getImage().getProfile().getPrefix() + clientUserDetails.getId() + ".jpg";
         return s3Service.uploadFile(imageService.getInputStream(bufferedImage, "jpg"), fileName, multipartFile.getContentType());
     }
 

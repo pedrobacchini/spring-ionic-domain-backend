@@ -24,7 +24,7 @@ public class ApplicationProperties {
     @Setter
     public static class JWT {
         private String secret;
-        private String expiration;
+        private Long expiration;
     }
 
     @Getter
@@ -53,6 +53,16 @@ public class ApplicationProperties {
     @Getter
     @Setter
     public static class Image {
-        private String prefixClientProfile;
+
+        @Getter
+        private final Profile profile = new Profile();
+
+        @Getter
+        @Setter
+        public static class Profile {
+            private String prefix;
+            private int size;
+        }
+
     }
 }

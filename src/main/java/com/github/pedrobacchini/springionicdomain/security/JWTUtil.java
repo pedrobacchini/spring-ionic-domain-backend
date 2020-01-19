@@ -30,7 +30,7 @@ public class JWTUtil {
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
-                .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(applicationProperties.getJwt().getExpiration())))
+                .setExpiration(new Date(System.currentTimeMillis() + applicationProperties.getJwt().getExpiration()))
                 .signWith(SignatureAlgorithm.HS512, applicationProperties.getJwt().getSecret().getBytes())
                 .compact();
     }
