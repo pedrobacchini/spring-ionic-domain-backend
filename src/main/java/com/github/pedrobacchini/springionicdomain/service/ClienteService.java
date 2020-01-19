@@ -40,16 +40,31 @@ public class ClienteService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ApplicationProperties applicationProperties;
 
+//    TODO trocar mensagens de erros diretas no codigo pelo messagesource
     public Cliente find(Integer id) {
 
         Optional<ClientUserDetails> authenticated = UserService.authenticated();
 
-        if (!authenticated.isPresent() || !authenticated.get().hasRole(Perfil.ADMIN) && !id.equals(authenticated.get().getId())) {
+        if (!authenticated.isPresent() || !authenticated.get().hasRole(Perfil.ADMIN) &&
+                !id.equals(authenticated.get().getId())) {
             throw new AuthorizationException("Acesso Negado");
         }
         return clienteRepository.findById(id)
                 .orElseThrow(() ->
                         new ObjectNotFoundException("Objeto não encontrado! Id: " + id
+                                + ", Tipo: " + Cliente.class.getName()));
+    }
+
+    public Cliente findByEmail(String email) {
+        Optional<ClientUserDetails> authenticated = UserService.authenticated();
+
+        if (!authenticated.isPresent() || !authenticated.get().hasRole(Perfil.ADMIN) &&
+                !email.equals(authenticated.get().getUsername())) {
+            throw new AuthorizationException("Acesso Negado");
+        }
+        return clienteRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new ObjectNotFoundException("Objeto não encontrado! email: " + email
                                 + ", Tipo: " + Cliente.class.getName()));
     }
 
