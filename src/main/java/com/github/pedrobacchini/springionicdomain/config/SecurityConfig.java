@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.config;
 
+import com.github.pedrobacchini.springionicdomain.security.JWTAuthenticationFailureHandler;
 import com.github.pedrobacchini.springionicdomain.security.JWTAuthenticationFilter;
 import com.github.pedrobacchini.springionicdomain.security.JWTAuthorizationFilter;
 import com.github.pedrobacchini.springionicdomain.security.JWTUtil;
@@ -57,12 +58,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //esse tipo de ataque pois não armazena sessão
         http.cors().and().csrf().disable();
 
+        JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(jwtUtil, authenticationManager());
+        jwtAuthenticationFilter.setAuthenticationFailureHandler(new JWTAuthenticationFailureHandler());
+
         http.authorizeRequests()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
                 .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                 .anyRequest().authenticated();
-        http.addFilter(new JWTAuthenticationFilter(jwtUtil, authenticationManager()));
+        http.addFilter(jwtAuthenticationFilter);
         http.addFilter(new JWTAuthorizationFilter(jwtUtil, userDetailsService, authenticationManager()));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
