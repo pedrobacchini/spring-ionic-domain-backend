@@ -50,6 +50,45 @@ public class DBService {
         Produto produto9 = new Produto(null, "Abajour", 100D);
         Produto produto10 = new Produto(null, "Pendente", 180D);
         Produto produto11 = new Produto(null, "Shampoo", 90D);
+        Produto produto12 = new Produto(null, "Produto 12", 10.00);
+        Produto produto13 = new Produto(null, "Produto 13", 10.00);
+        Produto produto14 = new Produto(null, "Produto 14", 10.00);
+        Produto produto15 = new Produto(null, "Produto 15", 10.00);
+        Produto produto16 = new Produto(null, "Produto 16", 10.00);
+        Produto produto17 = new Produto(null, "Produto 17", 10.00);
+        Produto produto18 = new Produto(null, "Produto 18", 10.00);
+        Produto produto19 = new Produto(null, "Produto 19", 10.00);
+        Produto produto20 = new Produto(null, "Produto 20", 10.00);
+        Produto produto21 = new Produto(null, "Produto 21", 10.00);
+        Produto produto22 = new Produto(null, "Produto 22", 10.00);
+        Produto produto23 = new Produto(null, "Produto 23", 10.00);
+        Produto produto24 = new Produto(null, "Produto 24", 10.00);
+        Produto produto25 = new Produto(null, "Produto 25", 10.00);
+        Produto produto26 = new Produto(null, "Produto 26", 10.00);
+        Produto produto27 = new Produto(null, "Produto 27", 10.00);
+        Produto produto28 = new Produto(null, "Produto 28", 10.00);
+        Produto produto29 = new Produto(null, "Produto 29", 10.00);
+        Produto produto30 = new Produto(null, "Produto 30", 10.00);
+        Produto produto31 = new Produto(null, "Produto 31", 10.00);
+        Produto produto32 = new Produto(null, "Produto 32", 10.00);
+        Produto produto33 = new Produto(null, "Produto 33", 10.00);
+        Produto produto34 = new Produto(null, "Produto 34", 10.00);
+        Produto produto35 = new Produto(null, "Produto 35", 10.00);
+        Produto produto36 = new Produto(null, "Produto 36", 10.00);
+        Produto produto37 = new Produto(null, "Produto 37", 10.00);
+        Produto produto38 = new Produto(null, "Produto 38", 10.00);
+        Produto produto39 = new Produto(null, "Produto 39", 10.00);
+        Produto produto40 = new Produto(null, "Produto 40", 10.00);
+        Produto produto41 = new Produto(null, "Produto 41", 10.00);
+        Produto produto42 = new Produto(null, "Produto 42", 10.00);
+        Produto produto43 = new Produto(null, "Produto 43", 10.00);
+        Produto produto44 = new Produto(null, "Produto 44", 10.00);
+        Produto produto45 = new Produto(null, "Produto 45", 10.00);
+        Produto produto46 = new Produto(null, "Produto 46", 10.00);
+        Produto produto47 = new Produto(null, "Produto 47", 10.00);
+        Produto produto48 = new Produto(null, "Produto 48", 10.00);
+        Produto produto49 = new Produto(null, "Produto 49", 10.00);
+        Produto produto50 = new Produto(null, "Produto 50", 10.00);
 
         categoria1.addAllProduto(Arrays.asList(produto1, produto2, produto3));
         categoria2.addAllProduto(Arrays.asList(produto2, produto4));
@@ -59,11 +98,23 @@ public class DBService {
         categoria6.addAllProduto(Arrays.asList(produto9, produto10));
         categoria7.addProduto(produto11);
 
+        categoria1.addAllProduto(Arrays.asList(produto12, produto13, produto14, produto15, produto16, produto17,
+                produto18, produto19, produto20, produto21, produto22, produto23, produto24, produto25,
+                produto26, produto27, produto28, produto29, produto30, produto31, produto32, produto33,
+                produto34, produto35, produto36, produto37, produto38, produto39, produto40, produto41,
+                produto42, produto43, produto44, produto45, produto46, produto47, produto48, produto49,
+                produto50));
+
         categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2, categoria3, categoria4,
                 categoria5, categoria6, categoria7));
 
         produtoRepository.saveAll(Arrays.asList(produto1, produto2, produto3, produto4, produto5,
-                produto6, produto7, produto8, produto9, produto10, produto11));
+                produto6, produto7, produto8, produto9, produto10, produto11, produto12, produto13,
+                produto14, produto15, produto16, produto17, produto18, produto19, produto20, produto21,
+                produto22, produto23, produto24, produto25, produto26, produto27, produto28, produto29,
+                produto30, produto31, produto32, produto33, produto34, produto35, produto36, produto37,
+                produto38, produto39, produto40, produto41, produto42, produto43, produto44, produto45,
+                produto46, produto47, produto48, produto49, produto50));
 
         Estado estado1 = new Estado(null, "Minas Gerais");
         Estado estado2 = new Estado(null, "São Paulo");
@@ -113,7 +164,9 @@ public class DBService {
 
         SimpleDateFormat formatDiaHora = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         SimpleDateFormat formatDia = new SimpleDateFormat("dd-MM-yyyy");
-        Date instante1, instante2, dataVencimento;
+        Date instante1;
+        Date instante2;
+        Date dataVencimento;
 
         instante1 = formatDiaHora.parse("30-09-0217 10:32");
         instante2 = formatDiaHora.parse("10-10-2017 19:35");
