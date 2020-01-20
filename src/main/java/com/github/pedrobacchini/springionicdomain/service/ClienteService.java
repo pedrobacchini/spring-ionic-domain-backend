@@ -1,6 +1,7 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
 import com.github.pedrobacchini.springionicdomain.config.ApplicationProperties;
+import com.github.pedrobacchini.springionicdomain.config.LocaleMessageSource;
 import com.github.pedrobacchini.springionicdomain.domain.Cidade;
 import com.github.pedrobacchini.springionicdomain.domain.Cliente;
 import com.github.pedrobacchini.springionicdomain.domain.Endereco;
@@ -33,26 +34,28 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClienteService {
 
-    private final S3Service s3Service;
-    private final ImageService imageService;
-    private final ClienteRepository clienteRepository;
-    private final EnderecoRepository enderecoRepository;
+    private final LocaleMessageSource localeMessageSource;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ApplicationProperties applicationProperties;
 
-//    TODO trocar mensagens de erros diretas no codigo pelo messagesource
+    private final S3Service s3Service;
+    private final ImageService imageService;
+
+    private final ClienteRepository clienteRepository;
+    private final EnderecoRepository enderecoRepository;
+
     public Cliente find(Integer id) {
 
         Optional<ClientUserDetails> authenticated = UserService.authenticated();
 
         if (!authenticated.isPresent() || !authenticated.get().hasRole(Perfil.ADMIN) &&
                 !id.equals(authenticated.get().getId())) {
-            throw new AuthorizationException("Acesso Negado");
+            throw new AuthorizationException(localeMessageSource.getMessage("access-denied"));
         }
         return clienteRepository.findById(id)
-                .orElseThrow(() ->
-                        new ObjectNotFoundException("Objeto não encontrado! Id: " + id
-                                + ", Tipo: " + Cliente.class.getName()));
+                .orElseThrow(() -> new ObjectNotFoundException(
+                        localeMessageSource.getMessage("object-not-found", "id", id, Cliente.class.getName())));
     }
 
     public Cliente findByEmail(String email) {
@@ -60,12 +63,11 @@ public class ClienteService {
 
         if (!authenticated.isPresent() || !authenticated.get().hasRole(Perfil.ADMIN) &&
                 !email.equals(authenticated.get().getUsername())) {
-            throw new AuthorizationException("Acesso Negado");
+            throw new AuthorizationException(localeMessageSource.getMessage("access-denied"));
         }
         return clienteRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new ObjectNotFoundException("Objeto não encontrado! email: " + email
-                                + ", Tipo: " + Cliente.class.getName()));
+                .orElseThrow(() -> new ObjectNotFoundException(
+                        localeMessageSource.getMessage("object-not-found", "email", email, Cliente.class.getName())));
     }
 
     @Transactional
@@ -88,7 +90,7 @@ public class ClienteService {
         try {
             clienteRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException("Não e possivel excluir cliente porque há pedidos relacionados");
+            throw new DataIntegrityException(localeMessageSource.getMessage("not-delete-customer-with-orders"));
         }
     }
 
@@ -142,7 +144,7 @@ public class ClienteService {
 
     public URI uploadProfilePicture(MultipartFile multipartFile, ClientUserDetails clientUserDetails) {
         if (clientUserDetails == null)
-            throw new AuthorizationException("Acesso Negado");
+            throw new AuthorizationException(localeMessageSource.getMessage("access-denied"));
 
         BufferedImage bufferedImage = imageService.getJpgImageFromFile(multipartFile);
         bufferedImage = imageService.cropSquare(bufferedImage);

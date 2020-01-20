@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.resource;
 
+import com.github.pedrobacchini.springionicdomain.config.LocaleMessageSource;
 import com.github.pedrobacchini.springionicdomain.dto.EmailDTO;
 import com.github.pedrobacchini.springionicdomain.security.ClientUserDetails;
 import com.github.pedrobacchini.springionicdomain.security.JWTUtil;
@@ -26,12 +27,13 @@ public class AuthResource {
 
     private final JWTUtil jwtUtil;
     private final AuthService authService;
+    private final LocaleMessageSource localeMessageSource;
 
     @PostMapping("/refresh_token")
     public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
         Optional<ClientUserDetails> authenticated = UserService.authenticated();
         if (!authenticated.isPresent())
-            throw new AuthorizationException("Acesso Negado");
+            throw new AuthorizationException(localeMessageSource.getMessage("access-denied"));
         String token = jwtUtil.generateToken(authenticated.get().getUsername());
         response.addHeader("Authorization", "Bearer " + token);
         response.addHeader("access-control-expose-headers", "Authorization");

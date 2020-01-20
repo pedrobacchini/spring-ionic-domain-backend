@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
+import com.github.pedrobacchini.springionicdomain.config.LocaleMessageSource;
 import com.github.pedrobacchini.springionicdomain.domain.Cliente;
 import com.github.pedrobacchini.springionicdomain.domain.PagamentoComBoleto;
 import com.github.pedrobacchini.springionicdomain.domain.Pedido;
@@ -24,25 +25,27 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PedidoService {
 
+    private final LocaleMessageSource localeMessageSource;
+
+    private final EmailService emailService;
     private final BoletoService boletoService;
+    private final ProdutoService produtoService;
+    private final ClienteService clienteService;
+
     private final PedidoRepository pedidoRepository;
     private final PagamentoRepository pagamentoRepository;
     private final ItemPedidoRepository itemPedidoRepository;
-    private final ProdutoService produtoService;
-    private final ClienteService clienteService;
-    private final EmailService emailService;
 
     public Pedido find(Integer id) {
         return pedidoRepository.findById(id)
-                .orElseThrow(() ->
-                        new ObjectNotFoundException("Objeto não encontrado! Id: " + id
-                                + ", Tipo: " + Pedido.class.getName()));
+                .orElseThrow(() -> new ObjectNotFoundException(
+                        localeMessageSource.getMessage("object-not-found", "id", id, Pedido.class.getName())));
     }
 
     public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         Optional<ClientUserDetails> authenticated = UserService.authenticated();
-        if(!authenticated.isPresent())
-            throw new AuthorizationException("Acesso Negado");
+        if (!authenticated.isPresent())
+            throw new AuthorizationException(localeMessageSource.getMessage("access-denied"));
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         Cliente cliente = clienteService.find(authenticated.get().getId());
         return pedidoRepository.findByCliente(cliente, pageRequest);

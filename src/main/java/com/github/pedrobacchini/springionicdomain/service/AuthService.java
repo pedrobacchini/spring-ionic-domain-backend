@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
+import com.github.pedrobacchini.springionicdomain.config.LocaleMessageSource;
 import com.github.pedrobacchini.springionicdomain.domain.Cliente;
 import com.github.pedrobacchini.springionicdomain.repository.ClienteRepository;
 import com.github.pedrobacchini.springionicdomain.service.exception.ObjectNotFoundException;
@@ -14,15 +15,18 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final EmailService emailService;
-    private final ClienteRepository clienteRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final Random random = new Random();
+    private final LocaleMessageSource localeMessageSource;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final EmailService emailService;
+
+    private final ClienteRepository clienteRepository;
 
     public void sendNewPassword(String email) {
         Optional<Cliente> optionalCliente = clienteRepository.findByEmail(email);
         if (!optionalCliente.isPresent())
-            throw new ObjectNotFoundException("Email não encontrado");
+            throw new ObjectNotFoundException(localeMessageSource.getMessage("email-not-found"));
         String newPass = newPassword();
         optionalCliente.get().setSenha(bCryptPasswordEncoder.encode(newPass));
         clienteRepository.save(optionalCliente.get());

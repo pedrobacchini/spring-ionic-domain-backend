@@ -8,6 +8,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ApplicationProperties {
 
     @Getter
+    @Setter
+    private String locale;
+
+    @Getter
     private final Email email = new Email();
 
     @Getter

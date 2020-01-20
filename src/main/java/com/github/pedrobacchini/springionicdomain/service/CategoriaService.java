@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
+import com.github.pedrobacchini.springionicdomain.config.LocaleMessageSource;
 import com.github.pedrobacchini.springionicdomain.domain.Categoria;
 import com.github.pedrobacchini.springionicdomain.dto.CategoriaDTO;
 import com.github.pedrobacchini.springionicdomain.repository.CategoriaRepository;
@@ -18,13 +19,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoriaService {
 
+    private final LocaleMessageSource localeMessageSource;
+
     private final CategoriaRepository categoriaRepository;
 
     public Categoria find(Integer id) {
         return categoriaRepository.findById(id)
-                .orElseThrow(() ->
-                        new ObjectNotFoundException("Objeto não encontrado! Id: " + id
-                                + ", Tipo: " + Categoria.class.getName()));
+                .orElseThrow(() -> new ObjectNotFoundException(
+                        localeMessageSource.getMessage("object-not-found", "id", id, Categoria.class.getName())));
     }
 
     public Categoria insert(Categoria categoria) {
@@ -44,7 +46,7 @@ public class CategoriaService {
         try {
             categoriaRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException("Não e possivel excluir uma categoria que possui produtos");
+            throw new DataIntegrityException(localeMessageSource.getMessage("not-delete-category-with-product"));
         }
     }
 

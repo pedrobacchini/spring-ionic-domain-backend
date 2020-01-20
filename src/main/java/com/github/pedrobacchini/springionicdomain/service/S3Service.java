@@ -3,6 +3,7 @@ package com.github.pedrobacchini.springionicdomain.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.github.pedrobacchini.springionicdomain.config.ApplicationProperties;
+import com.github.pedrobacchini.springionicdomain.config.LocaleMessageSource;
 import com.github.pedrobacchini.springionicdomain.service.exception.FileException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -20,6 +21,7 @@ import java.net.URISyntaxException;
 public class S3Service {
 
     private final AmazonS3 amazonS3;
+    private final LocaleMessageSource localeMessageSource;
     private final ApplicationProperties applicationProperties;
 
     public URI uploadFile(MultipartFile multipartFile) {
@@ -29,7 +31,7 @@ public class S3Service {
             String contentFile = multipartFile.getContentType();
             return uploadFile(inputStream, fileName, contentFile);
         } catch (IOException e) {
-            throw new FileException("Erro de IO: " + e.getMessage());
+            throw new FileException(localeMessageSource.getMessage("io-error", e.getMessage()));
         }
     }
 
@@ -43,9 +45,9 @@ public class S3Service {
             log.info("Upload finalizado");
             return amazonS3.getUrl(applicationProperties.getS3().getBucket(), fileName).toURI();
         } catch (URISyntaxException e) {
-            throw new FileException("Erro ao converter URL para URI");
+            throw new FileException(localeMessageSource.getMessage("error-convert-url"));
         } catch (IOException e) {
-            throw new FileException("Erro ao determinar o tamanho do arquivo");
+            throw new FileException(localeMessageSource.getMessage("error-determine-size-file"));
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
+import com.github.pedrobacchini.springionicdomain.config.LocaleMessageSource;
 import com.github.pedrobacchini.springionicdomain.domain.Categoria;
 import com.github.pedrobacchini.springionicdomain.domain.Produto;
 import com.github.pedrobacchini.springionicdomain.repository.CategoriaRepository;
@@ -17,14 +18,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProdutoService {
 
+    private final LocaleMessageSource localeMessageSource;
+
     private final ProdutoRepository produtoRepository;
     private final CategoriaRepository categoriaRepository;
 
     public Produto find(Integer id) {
         return produtoRepository.findById(id)
-                .orElseThrow(() ->
-                        new ObjectNotFoundException("Objeto não encontrado! Id: " + id
-                                + ", Tipo: " + Produto.class.getName()));
+                .orElseThrow(() -> new ObjectNotFoundException(
+                        localeMessageSource.getMessage("object-not-found", "id", id, Produto.class.getName())));
     }
 
     public Page<Produto> search(String nome, List<Integer> ids, Integer page,
