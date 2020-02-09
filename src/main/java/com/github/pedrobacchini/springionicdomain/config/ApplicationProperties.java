@@ -1,6 +1,7 @@
 package com.github.pedrobacchini.springionicdomain.config;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -49,14 +50,21 @@ public class ApplicationProperties {
     public static class S3 {
         private String bucket;
         private String region;
+
+        public String getBucketBaseUrl() {
+            return "https://"+bucket+".s3.amazonaws.com/";
+        }
     }
 
     @Getter
-    private final Image image = new Image();
+    private final Image image = new Image(s3);
 
     @Getter
     @Setter
+    @RequiredArgsConstructor
     public static class Image {
+
+        private final S3 s3;
 
         @Getter
         private final Profile profile = new Profile();
@@ -68,5 +76,17 @@ public class ApplicationProperties {
             private int size;
         }
 
+        @Getter
+        private final Categoria categoria = new Categoria();
+
+        @Getter
+        @Setter
+        public class Categoria {
+            private String prefix;
+
+            public String getBucketBaseUrl() {
+                return s3.getBucketBaseUrl() + prefix;
+            }
+        }
     }
 }
