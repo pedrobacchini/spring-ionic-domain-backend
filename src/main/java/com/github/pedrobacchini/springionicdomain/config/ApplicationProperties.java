@@ -51,9 +51,7 @@ public class ApplicationProperties {
         private String bucket;
         private String region;
 
-        public String getBucketBaseUrl() {
-            return "https://"+bucket+".s3.amazonaws.com/";
-        }
+        public String getBucketBaseUrl() { return "https://"+bucket+".s3.amazonaws.com/"; }
     }
 
     @Getter
@@ -71,9 +69,11 @@ public class ApplicationProperties {
 
         @Getter
         @Setter
-        public static class Profile {
+        public class Profile {
             private String prefix;
             private int size;
+
+            public String getBucketBaseUrl() { return s3.getBucketBaseUrl() + prefix; }
         }
 
         @Getter
@@ -84,9 +84,7 @@ public class ApplicationProperties {
         public class Categoria {
             private String prefix;
 
-            public String getBucketBaseUrl() {
-                return s3.getBucketBaseUrl() + prefix;
-            }
+            public String getBucketBaseUrl() { return s3.getBucketBaseUrl() + prefix; }
         }
     }
 }

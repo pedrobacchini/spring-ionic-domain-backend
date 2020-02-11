@@ -38,6 +38,12 @@ public class ClienteResource {
         return ResponseEntity.ok(cliente);
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<ClienteDTO> profile() {
+        Cliente authenticationClient = clienteService.getAuthenticationClient();
+        return ResponseEntity.ok(new ClienteDTO(authenticationClient));
+    }
+
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO clienteNewDTO) {
         Cliente cliente = clienteService.fromDTO(clienteNewDTO);

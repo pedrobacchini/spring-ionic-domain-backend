@@ -7,10 +7,10 @@ import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor
-public class CredenciaisDTO implements Serializable {
+public class CredentialsDTO implements Serializable {
 
     private static final long serialVersionUID = -5490988309660789925L;
 
     private String email;
-    private String senha;
+    private String password;
 }

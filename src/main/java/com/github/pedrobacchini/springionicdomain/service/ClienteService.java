@@ -157,4 +157,12 @@ public class ClienteService {
         clientPersisted.setNome(cliente.getNome());
         clientPersisted.setEmail(cliente.getEmail());
     }
+
+    public Cliente getAuthenticationClient() {
+        Optional<ClientUserDetails> authenticated = UserService.authenticated();
+        if (!authenticated.isPresent())
+            throw new AuthorizationException(localeMessageSource.getMessage("access-denied"));
+        else
+            return find(authenticated.get().getId());
+    }
 }

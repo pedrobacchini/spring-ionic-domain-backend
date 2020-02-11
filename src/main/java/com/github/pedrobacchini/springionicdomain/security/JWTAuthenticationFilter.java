@@ -1,7 +1,7 @@
 package com.github.pedrobacchini.springionicdomain.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.pedrobacchini.springionicdomain.dto.CredenciaisDTO;
+import com.github.pedrobacchini.springionicdomain.dto.CredentialsDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,12 +25,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
         try {
-            CredenciaisDTO credenciaisDTO = new ObjectMapper()
-                    .readValue(request.getInputStream(), CredenciaisDTO.class);
+            CredentialsDTO credentialsDTO = new ObjectMapper()
+                    .readValue(request.getInputStream(), CredentialsDTO.class);
 
             UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(credenciaisDTO.getEmail(),
-                            credenciaisDTO.getSenha(), new ArrayList<>());
+                    new UsernamePasswordAuthenticationToken(credentialsDTO.getEmail(),
+                            credentialsDTO.getPassword(), new ArrayList<>());
 
             return authenticationManager.authenticate(authenticationToken);
         } catch (IOException e) {

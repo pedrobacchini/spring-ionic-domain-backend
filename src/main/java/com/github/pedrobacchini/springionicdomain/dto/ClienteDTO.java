@@ -1,14 +1,22 @@
 package com.github.pedrobacchini.springionicdomain.dto;
 
+import com.github.pedrobacchini.springionicdomain.SpringIonicDomainApplication;
+import com.github.pedrobacchini.springionicdomain.config.ApplicationProperties;
 import com.github.pedrobacchini.springionicdomain.domain.Cliente;
 import com.github.pedrobacchini.springionicdomain.service.validation.ClienteUpdate;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
+@Getter
+@Setter
 @ClienteUpdate
+@NoArgsConstructor
 public class ClienteDTO implements Serializable {
 
     private static final long serialVersionUID = 7783415683050919389L;
@@ -23,35 +31,13 @@ public class ClienteDTO implements Serializable {
     @Email(message = "Email invalido")
     private String email;
 
-    public ClienteDTO() { }
+    private String picture;
 
     public ClienteDTO(Cliente cliente) {
         this.id = cliente.getId();
         this.nome = cliente.getNome();
         this.email = cliente.getEmail();
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+        ApplicationProperties applicationProperties = SpringIonicDomainApplication.getBean(ApplicationProperties.class);
+        this.picture = applicationProperties.getImage().getProfile().getBucketBaseUrl() + id +".jpg";
     }
 }
