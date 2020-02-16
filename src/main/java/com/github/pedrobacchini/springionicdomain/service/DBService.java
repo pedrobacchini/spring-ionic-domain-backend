@@ -18,7 +18,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class DBService {
 
-    private final CategoriaRepository categoriaRepository;
+    private final CategoryRepository categoryRepository;
     private final ProdutoRepository produtoRepository;
     private final EstadoRepository estadoRepository;
     private final CidadeRepository cidadeRepository;
@@ -31,13 +31,13 @@ public class DBService {
 
     public void instantiateTestDatabase() throws ParseException {
 
-        Categoria categoria1 = new Categoria(null, "Informática");
-        Categoria categoria2 = new Categoria(null, "Escrítorio");
-        Categoria categoria3 = new Categoria(null, "Cama, mesa e banho");
-        Categoria categoria4 = new Categoria(null, "Eletrônicos");
-        Categoria categoria5 = new Categoria(null, "Jardinagem");
-        Categoria categoria6 = new Categoria(null, "Decoração");
-        Categoria categoria7 = new Categoria(null, "Perfumaria");
+        Category category1 = new Category(null, "Informática");
+        Category category2 = new Category(null, "Escrítorio");
+        Category category3 = new Category(null, "Cama, mesa e banho");
+        Category category4 = new Category(null, "Eletrônicos");
+        Category category5 = new Category(null, "Jardinagem");
+        Category category6 = new Category(null, "Decoração");
+        Category category7 = new Category(null, "Perfumaria");
 
         Produto produto1 = new Produto(null, "Computador", 2000D);
         Produto produto2 = new Produto(null, "Impressora", 800D);
@@ -90,23 +90,23 @@ public class DBService {
         Produto produto49 = new Produto(null, "Produto 49", 10.00);
         Produto produto50 = new Produto(null, "Produto 50", 10.00);
 
-        categoria1.addAllProduto(Arrays.asList(produto1, produto2, produto3));
-        categoria2.addAllProduto(Arrays.asList(produto2, produto4));
-        categoria3.addAllProduto(Arrays.asList(produto5, produto6));
-        categoria4.addAllProduto(Arrays.asList(produto1, produto2, produto3, produto7));
-        categoria5.addProduto(produto8);
-        categoria6.addAllProduto(Arrays.asList(produto9, produto10));
-        categoria7.addProduto(produto11);
+        category1.addAllProduto(Arrays.asList(produto1, produto2, produto3));
+        category2.addAllProduto(Arrays.asList(produto2, produto4));
+        category3.addAllProduto(Arrays.asList(produto5, produto6));
+        category4.addAllProduto(Arrays.asList(produto1, produto2, produto3, produto7));
+        category5.addProduto(produto8);
+        category6.addAllProduto(Arrays.asList(produto9, produto10));
+        category7.addProduto(produto11);
 
-        categoria1.addAllProduto(Arrays.asList(produto12, produto13, produto14, produto15, produto16, produto17,
+        category1.addAllProduto(Arrays.asList(produto12, produto13, produto14, produto15, produto16, produto17,
                 produto18, produto19, produto20, produto21, produto22, produto23, produto24, produto25,
                 produto26, produto27, produto28, produto29, produto30, produto31, produto32, produto33,
                 produto34, produto35, produto36, produto37, produto38, produto39, produto40, produto41,
                 produto42, produto43, produto44, produto45, produto46, produto47, produto48, produto49,
                 produto50));
 
-        categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2, categoria3, categoria4,
-                categoria5, categoria6, categoria7));
+        categoryRepository.saveAll(Arrays.asList(category1, category2, category3, category4,
+                category5, category6, category7));
 
         produtoRepository.saveAll(Arrays.asList(produto1, produto2, produto3, produto4, produto5,
                 produto6, produto7, produto8, produto9, produto10, produto11, produto12, produto13,

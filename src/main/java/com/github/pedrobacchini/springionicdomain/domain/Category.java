@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Categoria implements Serializable {
+public class Category implements Serializable {
 
     private static final long serialVersionUID = -4422320111986670655L;
 
@@ -26,24 +26,24 @@ public class Categoria implements Serializable {
 
     @Getter
     @Setter
-    private String nome;
+    private String name;
 
     @ManyToMany(mappedBy = "categorias")
     private List<Produto> produtos = new ArrayList<>();
 
-    public Categoria(Integer id, String nome) {
+    public Category(Integer id, String name) {
         this.id = id;
-        this.nome = nome;
+        this.name = name;
     }
 
     public void addProduto(Produto produto) {
         this.produtos.add(produto);
-        produto.getCategorias().add(this);
+        produto.getCategories().add(this);
     }
 
     public void addAllProduto(List<Produto> produtos) {
         this.produtos.addAll(produtos);
-        produtos.forEach(produto -> produto.getCategorias().add(this));
+        produtos.forEach(produto -> produto.getCategories().add(this));
     }
 
     public List<Produto> getProdutos() { return Collections.unmodifiableList(this.produtos); }

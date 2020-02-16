@@ -24,7 +24,7 @@ public class Produto implements Serializable {
     @JoinTable(name = "PRODUTO_CATEGORIA",
             joinColumns = @JoinColumn(name = "produto_id"),
             inverseJoinColumns = @JoinColumn(name = "categoria_id"))
-    private List<Categoria> categorias = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "id.produto")
@@ -59,7 +59,7 @@ public class Produto implements Serializable {
 
     public void setPreco(Double preco) { this.preco = preco; }
 
-    public List<Categoria> getCategorias() { return categorias; }
+    public List<Category> getCategories() { return categories; }
 
     public Set<ItemPedido> getItens() { return itens; }
 

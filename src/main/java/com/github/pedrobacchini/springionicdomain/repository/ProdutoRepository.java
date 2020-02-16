@@ -1,6 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.repository;
 
-import com.github.pedrobacchini.springionicdomain.domain.Categoria;
+import com.github.pedrobacchini.springionicdomain.domain.Category;
 import com.github.pedrobacchini.springionicdomain.domain.Produto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,14 +18,14 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
     @Transactional(readOnly = true)
     @Query("SELECT DISTINCT obj " +
             "FROM Produto obj " +
-            "INNER JOIN obj.categorias cat " +
+            "INNER JOIN obj.categories cat " +
             "WHERE obj.nome LIKE %:nome% and cat IN :categorias")
-    Page<Produto> search(@Param("nome") String nome,
-                         @Param("categorias") List<Categoria> categorias,
+    Page<Produto> search(@Param("name") String nome,
+                         @Param("categories") List<Category> categories,
                          Pageable pageRequest);
 
     @Transactional(readOnly = true)
-    Page<Produto> findDistinctByNomeContainingAndCategoriasIn(String nome,
-                                                              List<Categoria> categorias,
+    Page<Produto> findDistinctByNomeContainingAndCategoriesIn(String nome,
+                                                              List<Category> categories,
                                                               Pageable pageRequest);
 }

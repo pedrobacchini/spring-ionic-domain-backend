@@ -29,7 +29,7 @@ public class AuthResource {
     private final AuthService authService;
     private final LocaleMessageSource localeMessageSource;
 
-    @PostMapping("/refresh_token")
+    @PostMapping("/refresh-token")
     public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
         Optional<ClientUserDetails> authenticated = UserService.authenticated();
         if (!authenticated.isPresent())
