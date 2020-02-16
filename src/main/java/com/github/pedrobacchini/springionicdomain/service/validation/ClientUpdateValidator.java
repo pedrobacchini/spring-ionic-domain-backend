@@ -1,8 +1,8 @@
 package com.github.pedrobacchini.springionicdomain.service.validation;
 
-import com.github.pedrobacchini.springionicdomain.domain.Cliente;
-import com.github.pedrobacchini.springionicdomain.dto.ClienteDTO;
-import com.github.pedrobacchini.springionicdomain.repository.ClienteRepository;
+import com.github.pedrobacchini.springionicdomain.domain.Client;
+import com.github.pedrobacchini.springionicdomain.dto.ClientDTO;
+import com.github.pedrobacchini.springionicdomain.repository.ClientRepository;
 import com.github.pedrobacchini.springionicdomain.resource.exception.FieldMessage;
 import org.springframework.web.servlet.HandlerMapping;
 
@@ -14,20 +14,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate, ClienteDTO> {
+public class ClientUpdateValidator implements ConstraintValidator<ClientUpdate, ClientDTO> {
 
     private final HttpServletRequest request;
-    private final ClienteRepository clienteRepository;
+    private final ClientRepository clientRepository;
 
-    public ClienteUpdateValidator(HttpServletRequest request, ClienteRepository clienteRepository) {
+    public ClientUpdateValidator(HttpServletRequest request, ClientRepository clientRepository) {
         this.request = request;
-        this.clienteRepository = clienteRepository;
+        this.clientRepository = clientRepository;
     }
 
-    public void initialize(ClienteUpdate constraint) {
+    public void initialize(ClientUpdate constraint) {
     }
 
-    public boolean isValid(ClienteDTO clienteDTO, ConstraintValidatorContext context) {
+    public boolean isValid(ClientDTO clientDTO, ConstraintValidatorContext context) {
 
         @SuppressWarnings("unchecked")
         Map<String, String> map = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
@@ -35,9 +35,9 @@ public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate
 
         List<FieldMessage> list = new ArrayList<>();
 
-        Optional<Cliente> clienteOptional = clienteRepository.findByEmail(clienteDTO.getEmail());
-        clienteOptional.ifPresent(cliente -> {
-            if (!cliente.getId().equals(uriId))
+        Optional<Client> clientOptional = clientRepository.findByEmail(clientDTO.getEmail());
+        clientOptional.ifPresent(client -> {
+            if (!client.getId().equals(uriId))
                 list.add(new FieldMessage("email", "Email já existe"));
         });
 

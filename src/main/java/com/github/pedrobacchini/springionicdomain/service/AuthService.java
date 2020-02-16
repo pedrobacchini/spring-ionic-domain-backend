@@ -1,8 +1,8 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
 import com.github.pedrobacchini.springionicdomain.config.LocaleMessageSource;
-import com.github.pedrobacchini.springionicdomain.domain.Cliente;
-import com.github.pedrobacchini.springionicdomain.repository.ClienteRepository;
+import com.github.pedrobacchini.springionicdomain.domain.Client;
+import com.github.pedrobacchini.springionicdomain.repository.ClientRepository;
 import com.github.pedrobacchini.springionicdomain.service.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,16 +21,16 @@ public class AuthService {
 
     private final EmailService emailService;
 
-    private final ClienteRepository clienteRepository;
+    private final ClientRepository clientRepository;
 
     public void sendNewPassword(String email) {
-        Optional<Cliente> optionalCliente = clienteRepository.findByEmail(email);
-        if (!optionalCliente.isPresent())
+        Optional<Client> optionalClient = clientRepository.findByEmail(email);
+        if (!optionalClient.isPresent())
             throw new ObjectNotFoundException(localeMessageSource.getMessage("email-not-found"));
         String newPass = newPassword();
-        optionalCliente.get().setSenha(bCryptPasswordEncoder.encode(newPass));
-        clienteRepository.save(optionalCliente.get());
-        emailService.sendNewPasswordEmail(optionalCliente.get(), newPass);
+        optionalClient.get().setPassword(bCryptPasswordEncoder.encode(newPass));
+        clientRepository.save(optionalClient.get());
+        emailService.sendNewPasswordEmail(optionalClient.get(), newPass);
     }
 
     private String newPassword() {

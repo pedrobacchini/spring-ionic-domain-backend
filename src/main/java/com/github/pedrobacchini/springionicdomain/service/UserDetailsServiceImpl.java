@@ -1,7 +1,7 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
-import com.github.pedrobacchini.springionicdomain.domain.Cliente;
-import com.github.pedrobacchini.springionicdomain.repository.ClienteRepository;
+import com.github.pedrobacchini.springionicdomain.domain.Client;
+import com.github.pedrobacchini.springionicdomain.repository.ClientRepository;
 import com.github.pedrobacchini.springionicdomain.security.ClientUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,14 +15,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final ClienteRepository clienteRepository;
+    private final ClientRepository clientRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<Cliente> optionalCliente = clienteRepository.findByEmail(email);
-        if(optionalCliente.isPresent()) {
-            Cliente cliente = optionalCliente.get();
-            return new ClientUserDetails(cliente.getId(), cliente.getEmail(), cliente.getSenha(), cliente.getPerfis());
+        Optional<Client> optionalClient = clientRepository.findByEmail(email);
+        if(optionalClient.isPresent()) {
+            Client client = optionalClient.get();
+            return new ClientUserDetails(client.getId(), client.getEmail(), client.getPassword(), client.getRoles());
         } else {
             throw new UsernameNotFoundException(email);
         }

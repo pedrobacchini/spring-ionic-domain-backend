@@ -13,7 +13,7 @@
         Instante: <span th:text="${#dates.format(pedido.instante, 'dd/MM/yyyy hh:mm')}"></span>
     </p>
     <p>
-        Cliente: <span th:text="${pedido.cliente.nome}"></span>
+        Client: <span th:text="${pedido.client.name}"></span>
     </p>
     <p>
         Situação do pagamento: <span th:text="${pedido.pagamento.estado.descricao}"></span>

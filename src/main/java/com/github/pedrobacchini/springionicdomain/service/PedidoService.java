@@ -1,7 +1,7 @@
 package com.github.pedrobacchini.springionicdomain.service;
 
 import com.github.pedrobacchini.springionicdomain.config.LocaleMessageSource;
-import com.github.pedrobacchini.springionicdomain.domain.Cliente;
+import com.github.pedrobacchini.springionicdomain.domain.Client;
 import com.github.pedrobacchini.springionicdomain.domain.PagamentoComBoleto;
 import com.github.pedrobacchini.springionicdomain.domain.Pedido;
 import com.github.pedrobacchini.springionicdomain.enums.EstadoPagamento;
@@ -30,7 +30,7 @@ public class PedidoService {
     private final EmailService emailService;
     private final BoletoService boletoService;
     private final ProdutoService produtoService;
-    private final ClienteService clienteService;
+    private final ClientService clientService;
 
     private final PedidoRepository pedidoRepository;
     private final PagamentoRepository pagamentoRepository;
@@ -47,15 +47,15 @@ public class PedidoService {
         if (!authenticated.isPresent())
             throw new AuthorizationException(localeMessageSource.getMessage("access-denied"));
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-        Cliente cliente = clienteService.find(authenticated.get().getId());
-        return pedidoRepository.findByCliente(cliente, pageRequest);
+        Client client = clientService.find(authenticated.get().getId());
+        return pedidoRepository.findByClient(client, pageRequest);
     }
 
     @Transactional
     public Pedido insert(Pedido pedido) {
         pedido.setId(null);
         pedido.setInstante(new Date());
-        pedido.setCliente(clienteService.find(pedido.getCliente().getId()));
+        pedido.setClient(clientService.find(pedido.getClient().getId()));
         pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);
         pedido.getPagamento().setPedido(pedido);
         if (pedido.getPagamento() instanceof PagamentoComBoleto) {

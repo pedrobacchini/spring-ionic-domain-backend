@@ -25,8 +25,8 @@ public class Pedido implements Serializable {
     private Endereco enderecoDeEntrega;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    @JoinColumn(name = "client_id")
+    private Client client;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
     private Pagamento pagamento;
@@ -36,10 +36,10 @@ public class Pedido implements Serializable {
 
     public Pedido() { }
 
-    public Pedido(Date instante, Endereco enderecoDeEntrega, Cliente cliente) {
+    public Pedido(Date instante, Endereco enderecoDeEntrega, Client client) {
         this.instante = instante;
         this.enderecoDeEntrega = enderecoDeEntrega;
-        this.cliente = cliente;
+        this.client = client;
     }
 
     public double getValorTotal() { return itens.stream().mapToDouble(ItemPedido::getSubTotal).sum(); }
@@ -56,9 +56,9 @@ public class Pedido implements Serializable {
 
     public void setEnderecoDeEntrega(Endereco enderecoDeEntrega) { this.enderecoDeEntrega = enderecoDeEntrega; }
 
-    public Cliente getCliente() { return cliente; }
+    public Client getClient() { return client; }
 
-    public void setCliente(Cliente cliente) { this.cliente = cliente; }
+    public void setClient(Client client) { this.client = client; }
 
     public Pagamento getPagamento() { return pagamento; }
 
@@ -88,8 +88,8 @@ public class Pedido implements Serializable {
         sb.append(getId());
         sb.append(", Instante: ");
         sb.append(sdf.format(getInstante()));
-        sb.append(", Cliente: ");
-        sb.append(getCliente().getNome());
+        sb.append(", Client: ");
+        sb.append(getClient().getName());
         sb.append(", Situação do pagamento: ");
         sb.append(getPagamento().getEstado().getDescricao());
         sb.append("\nDetalhes:\n");

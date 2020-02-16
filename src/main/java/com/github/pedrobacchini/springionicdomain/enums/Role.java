@@ -1,26 +1,25 @@
 package com.github.pedrobacchini.springionicdomain.enums;
 
-public enum Perfil {
+import lombok.Getter;
+
+@Getter
+public enum Role {
 
     ADMIN(1, "ROLE_ADMIN"),
     CLIENT(2, "ROLE_CLIENT");
 
     private Integer cod;
-    private String descricao;
+    private String description;
 
-    Perfil(Integer cod, String descricao) {
+    Role(Integer cod, String description) {
         this.cod = cod;
-        this.descricao = descricao;
+        this.description = description;
     }
 
-    public Integer getCod() { return cod; }
-
-    public String getDescricao() { return descricao; }
-
-    public static Perfil toEnum(Integer cod) {
+    public static Role toEnum(Integer cod) {
         if (cod == null)
             return null;
-        for (Perfil value : Perfil.values()) {
+        for (Role value : Role.values()) {
             if (value.getCod().equals(cod)) {
                 return value;
             }

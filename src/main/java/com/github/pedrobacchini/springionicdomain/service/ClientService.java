@@ -3,13 +3,13 @@ package com.github.pedrobacchini.springionicdomain.service;
 import com.github.pedrobacchini.springionicdomain.config.ApplicationProperties;
 import com.github.pedrobacchini.springionicdomain.config.LocaleMessageSource;
 import com.github.pedrobacchini.springionicdomain.domain.Cidade;
-import com.github.pedrobacchini.springionicdomain.domain.Cliente;
+import com.github.pedrobacchini.springionicdomain.domain.Client;
 import com.github.pedrobacchini.springionicdomain.domain.Endereco;
-import com.github.pedrobacchini.springionicdomain.dto.ClienteDTO;
-import com.github.pedrobacchini.springionicdomain.dto.ClienteNewDTO;
-import com.github.pedrobacchini.springionicdomain.enums.Perfil;
-import com.github.pedrobacchini.springionicdomain.enums.TipoCliente;
-import com.github.pedrobacchini.springionicdomain.repository.ClienteRepository;
+import com.github.pedrobacchini.springionicdomain.dto.ClientDTO;
+import com.github.pedrobacchini.springionicdomain.dto.ClientNewDTO;
+import com.github.pedrobacchini.springionicdomain.enums.Role;
+import com.github.pedrobacchini.springionicdomain.enums.ClientType;
+import com.github.pedrobacchini.springionicdomain.repository.ClientRepository;
 import com.github.pedrobacchini.springionicdomain.repository.EnderecoRepository;
 import com.github.pedrobacchini.springionicdomain.security.ClientUserDetails;
 import com.github.pedrobacchini.springionicdomain.service.exception.AuthorizationException;
@@ -32,7 +32,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ClienteService {
+public class ClientService {
 
     private final LocaleMessageSource localeMessageSource;
 
@@ -42,104 +42,104 @@ public class ClienteService {
     private final S3Service s3Service;
     private final ImageService imageService;
 
-    private final ClienteRepository clienteRepository;
+    private final ClientRepository clientRepository;
     private final EnderecoRepository enderecoRepository;
 
-    public Cliente find(Integer id) {
+    public Client find(Integer id) {
 
         Optional<ClientUserDetails> authenticated = UserService.authenticated();
 
-        if (!authenticated.isPresent() || !authenticated.get().hasRole(Perfil.ADMIN) &&
+        if (!authenticated.isPresent() || !authenticated.get().hasRole(Role.ADMIN) &&
                 !id.equals(authenticated.get().getId())) {
             throw new AuthorizationException(localeMessageSource.getMessage("access-denied"));
         }
-        return clienteRepository.findById(id)
+        return clientRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException(
-                        localeMessageSource.getMessage("object-not-found", "id", id, Cliente.class.getName())));
+                        localeMessageSource.getMessage("object-not-found", "id", id, Client.class.getName())));
     }
 
-    public Cliente findByEmail(String email) {
+    public Client findByEmail(String email) {
         Optional<ClientUserDetails> authenticated = UserService.authenticated();
 
-        if (!authenticated.isPresent() || !authenticated.get().hasRole(Perfil.ADMIN) &&
+        if (!authenticated.isPresent() || !authenticated.get().hasRole(Role.ADMIN) &&
                 !email.equals(authenticated.get().getUsername())) {
             throw new AuthorizationException(localeMessageSource.getMessage("access-denied"));
         }
-        return clienteRepository.findByEmail(email)
+        return clientRepository.findByEmail(email)
                 .orElseThrow(() -> new ObjectNotFoundException(
-                        localeMessageSource.getMessage("object-not-found", "email", email, Cliente.class.getName())));
+                        localeMessageSource.getMessage("object-not-found", "email", email, Client.class.getName())));
     }
 
     @Transactional
-    public Cliente insert(Cliente cliente) {
+    public Client insert(Client client) {
         //Para ter certeza que e um atualização e nao uma inserção
-        cliente.setId(null);
-        cliente = clienteRepository.save(cliente);
-        enderecoRepository.saveAll(cliente.getEnderecos());
-        return cliente;
+        client.setId(null);
+        client = clientRepository.save(client);
+        enderecoRepository.saveAll(client.getEnderecos());
+        return client;
     }
 
-    public Cliente update(Cliente cliente) {
-        Cliente clientPersisted = find(cliente.getId());
-        updateData(clientPersisted, cliente);
-        return clienteRepository.save(clientPersisted);
+    public Client update(Client client) {
+        Client clientPersisted = find(client.getId());
+        updateData(clientPersisted, client);
+        return clientRepository.save(clientPersisted);
     }
 
     public void delete(Integer id) {
         find(id);
         try {
-            clienteRepository.deleteById(id);
+            clientRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException(localeMessageSource.getMessage("not-delete-customer-with-orders"));
         }
     }
 
-    public List<Cliente> findAll() { return clienteRepository.findAll(); }
+    public List<Client> findAll() { return clientRepository.findAll(); }
 
-    public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+    public Page<Client> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-        return clienteRepository.findAll(pageRequest);
+        return clientRepository.findAll(pageRequest);
     }
 
-    public Cliente fromDTO(ClienteDTO clienteDTO) {
-        return new Cliente(
-                clienteDTO.getId(),
-                clienteDTO.getNome(),
-                clienteDTO.getEmail(),
+    public Client fromDTO(ClientDTO clientDTO) {
+        return new Client(
+                clientDTO.getId(),
+                clientDTO.getName(),
+                clientDTO.getEmail(),
                 null,
                 null,
                 null);
     }
 
-    public Cliente fromDTO(ClienteNewDTO clienteNewDTO) {
-        Cliente cliente = new Cliente(
+    public Client fromDTO(ClientNewDTO clientNewDTO) {
+        Client client = new Client(
                 null,
-                clienteNewDTO.getNome(),
-                clienteNewDTO.getEmail(),
-                clienteNewDTO.getCpfOuCnpj(),
-                TipoCliente.toEnum(clienteNewDTO.getTipo()),
-                bCryptPasswordEncoder.encode(clienteNewDTO.getSenha()));
+                clientNewDTO.getName(),
+                clientNewDTO.getEmail(),
+                clientNewDTO.getCpfOrCnpj(),
+                ClientType.toEnum(clientNewDTO.getType()),
+                bCryptPasswordEncoder.encode(clientNewDTO.getPassword()));
 
-        Cidade cidade = new Cidade(clienteNewDTO.getCidadeId(), null, null);
+        Cidade cidade = new Cidade(clientNewDTO.getCidadeId(), null, null);
 
         Endereco endereco = new Endereco(
                 null,
-                clienteNewDTO.getLogradouro(),
-                clienteNewDTO.getNumero(),
-                clienteNewDTO.getComplemento(),
-                clienteNewDTO.getBairro(),
-                clienteNewDTO.getCep(),
-                cliente,
+                clientNewDTO.getLogradouro(),
+                clientNewDTO.getNumero(),
+                clientNewDTO.getComplemento(),
+                clientNewDTO.getBairro(),
+                clientNewDTO.getCep(),
+                client,
                 cidade);
-        cliente.getEnderecos().add(endereco);
-        cliente.getTelefones().add(clienteNewDTO.getTelefone1());
-        if (clienteNewDTO.getTelefone2() != null) {
-            cliente.getTelefones().add(clienteNewDTO.getTelefone2());
+        client.getEnderecos().add(endereco);
+        client.getPhones().add(clientNewDTO.getTelefone1());
+        if (clientNewDTO.getTelefone2() != null) {
+            client.getPhones().add(clientNewDTO.getTelefone2());
         }
-        if (clienteNewDTO.getTelefone3() != null) {
-            cliente.getTelefones().add(clienteNewDTO.getTelefone3());
+        if (clientNewDTO.getTelefone3() != null) {
+            client.getPhones().add(clientNewDTO.getTelefone3());
         }
-        return cliente;
+        return client;
     }
 
     public URI uploadProfilePicture(MultipartFile multipartFile, ClientUserDetails clientUserDetails) {
@@ -153,12 +153,12 @@ public class ClienteService {
         return s3Service.uploadFile(imageService.getInputStream(bufferedImage, "jpg"), fileName, multipartFile.getContentType());
     }
 
-    private void updateData(Cliente clientPersisted, Cliente cliente) {
-        clientPersisted.setNome(cliente.getNome());
-        clientPersisted.setEmail(cliente.getEmail());
+    private void updateData(Client clientPersisted, Client client) {
+        clientPersisted.setName(client.getName());
+        clientPersisted.setEmail(client.getEmail());
     }
 
-    public Cliente getAuthenticationClient() {
+    public Client getAuthenticationClient() {
         Optional<ClientUserDetails> authenticated = UserService.authenticated();
         if (!authenticated.isPresent())
             throw new AuthorizationException(localeMessageSource.getMessage("access-denied"));

@@ -2,8 +2,8 @@ package com.github.pedrobacchini.springionicdomain.service;
 
 import com.github.pedrobacchini.springionicdomain.domain.*;
 import com.github.pedrobacchini.springionicdomain.enums.EstadoPagamento;
-import com.github.pedrobacchini.springionicdomain.enums.Perfil;
-import com.github.pedrobacchini.springionicdomain.enums.TipoCliente;
+import com.github.pedrobacchini.springionicdomain.enums.Role;
+import com.github.pedrobacchini.springionicdomain.enums.ClientType;
 import com.github.pedrobacchini.springionicdomain.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,7 +23,7 @@ public class DBService {
     private final EstadoRepository estadoRepository;
     private final CidadeRepository cidadeRepository;
     private final EnderecoRepository enderecoRepository;
-    private final ClienteRepository clienteRepository;
+    private final ClientRepository clientRepository;
     private final PedidoRepository pedidoRepository;
     private final PagamentoRepository pagamentoRepository;
     private final ItemPedidoRepository itemPedidoRepository;
@@ -129,22 +129,22 @@ public class DBService {
         estadoRepository.saveAll(Arrays.asList(estado1, estado2));
         cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 
-        Cliente mariaSilva = new Cliente(null,
+        Client mariaSilva = new Client(null,
                 "Maria Silva",
                 "pedroheinrique@gmail.com",
                 "36378912377",
-                TipoCliente.PESSOAFISICA,
+                ClientType.INDIVIDUAL,
                 bCryptPasswordEncoder.encode("123"));
-        mariaSilva.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+        mariaSilva.getPhones().addAll(Arrays.asList("27363323", "93838393"));
 
-        Cliente anaCosta = new Cliente(null,
+        Client anaCosta = new Client(null,
                 "Ana Costa",
                 "pedrobacchini@outlook.com",
                 "68813512244",
-                TipoCliente.PESSOAFISICA,
+                ClientType.INDIVIDUAL,
                 bCryptPasswordEncoder.encode("123"));
-        anaCosta.getTelefones().add("66996193389");
-        anaCosta.addPerfil(Perfil.ADMIN);
+        anaCosta.getPhones().add("66996193389");
+        anaCosta.addRole(Role.ADMIN);
 
         Endereco endereco1 = new Endereco(null, "Rua Flores",
                 "300", "Apto 203",
@@ -159,7 +159,7 @@ public class DBService {
         mariaSilva.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
         anaCosta.getEnderecos().add(endereco3);
 
-        clienteRepository.saveAll(Arrays.asList(mariaSilva, anaCosta));
+        clientRepository.saveAll(Arrays.asList(mariaSilva, anaCosta));
         enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2, endereco3));
 
         SimpleDateFormat formatDiaHora = new SimpleDateFormat("dd-MM-yyyy HH:mm");
@@ -183,8 +183,8 @@ public class DBService {
         pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
         pagamentoRepository.saveAll(Arrays.asList(pagamentoComBoleto, pagamentoComCartao));
 
-//        cliente1.getPedidos().addAll(Arrays.asList(pedido1, pedido2));
-//        clienteRepository.save(cliente1);
+//        client1.getPedidos().addAll(Arrays.asList(pedido1, pedido2));
+//        clientRepository.save(client1);
 
         ItemPedido itemPedido1 = new ItemPedido(pedido1, produto1, 0D, 1, 2000D);
         ItemPedido itemPedido2 = new ItemPedido(pedido1, produto3, 0D, 2, 80D);

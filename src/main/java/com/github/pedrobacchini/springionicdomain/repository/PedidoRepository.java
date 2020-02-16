@@ -1,6 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.repository;
 
-import com.github.pedrobacchini.springionicdomain.domain.Cliente;
+import com.github.pedrobacchini.springionicdomain.domain.Client;
 import com.github.pedrobacchini.springionicdomain.domain.Pedido;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,5 +12,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 
     @Transactional(readOnly = true)
-    Page<Pedido> findByCliente(Cliente cliente, Pageable pageRequest);
+    Page<Pedido> findByClient(Client client, Pageable pageRequest);
 }

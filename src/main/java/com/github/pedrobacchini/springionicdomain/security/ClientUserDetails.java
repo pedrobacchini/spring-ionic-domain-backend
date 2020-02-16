@@ -1,6 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.security;
 
-import com.github.pedrobacchini.springionicdomain.enums.Perfil;
+import com.github.pedrobacchini.springionicdomain.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,12 +18,12 @@ public class ClientUserDetails implements UserDetails {
     private String senha;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public ClientUserDetails(int id, String email, String senha, Set<Perfil> perfis) {
+    public ClientUserDetails(int id, String email, String senha, Set<Role> roles) {
         this.id = id;
         this.email = email;
         this.senha = senha;
-        this.authorities = perfis.stream()
-                .map(perfil -> new SimpleGrantedAuthority(perfil.getDescricao()))
+        this.authorities = roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getDescription()))
                 .collect(Collectors.toSet());
     }
 
@@ -50,7 +50,7 @@ public class ClientUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() { return true; }
 
-    public boolean hasRole(Perfil admin) {
-        return authorities.contains(new SimpleGrantedAuthority(admin.getDescricao()));
+    public boolean hasRole(Role admin) {
+        return authorities.contains(new SimpleGrantedAuthority(admin.getDescription()));
     }
 }
