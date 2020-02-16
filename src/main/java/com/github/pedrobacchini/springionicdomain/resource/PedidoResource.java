@@ -35,7 +35,7 @@ public class PedidoResource {
 
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody Pedido pedido) {
-//        Pedido pedido = categoriaService.fromDTO(categoriaDTO);
+//        Pedido pedido = categoryService.fromDTO(categoryDTO);
         pedido = pedidoService.insert(pedido);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(pedido.getId()).toUri();

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/categoria")
+@RequestMapping("/category")
 public class CategoryResource {
 
     private final CategoryService categoryService;
@@ -41,7 +41,7 @@ public class CategoryResource {
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> update(@Valid @RequestBody CategoryDTO categoryDTO, @PathVariable Integer id) {
-//        para garantir que voce esta atualizando a categoria correta
+//        to ensure that you are updating the correct category
         Category category = categoryService.fromDTO(categoryDTO);
         category.setId(id);
         category = categoryService.update(category);
@@ -58,8 +58,8 @@ public class CategoryResource {
     @GetMapping()
     public ResponseEntity<List<CategoryDTO>> findAll() {
         List<Category> categories = categoryService.findAll();
-        List<CategoryDTO> categoriasDTO = categories.stream().map(CategoryDTO::new).collect(Collectors.toList());
-        return ResponseEntity.ok(categoriasDTO);
+        List<CategoryDTO> categoriesDTO = categories.stream().map(CategoryDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(categoriesDTO);
     }
 
     @GetMapping("/page")
@@ -68,8 +68,8 @@ public class CategoryResource {
             @RequestParam(defaultValue = "24") Integer linesPerPage,
             @RequestParam(defaultValue = "nome") String orderBy,
             @RequestParam(defaultValue = "ASC") String direction) {
-        Page<Category> categoriaPage = categoryService.findPage(page, linesPerPage, orderBy, direction);
-        Page<CategoryDTO> categoriaDTOPage = categoriaPage.map(CategoryDTO::new);
-        return ResponseEntity.ok(categoriaDTOPage);
+        Page<Category> categoryPage = categoryService.findPage(page, linesPerPage, orderBy, direction);
+        Page<CategoryDTO> categoryDTOPage = categoryPage.map(CategoryDTO::new);
+        return ResponseEntity.ok(categoryDTOPage);
     }
 }

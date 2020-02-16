@@ -77,11 +77,11 @@ public class ApplicationProperties {
         }
 
         @Getter
-        private final Categoria categoria = new Categoria();
+        private final Category category = new Category();
 
         @Getter
         @Setter
-        public class Categoria {
+        public class Category {
             private String prefix;
 
             public String getBucketBaseUrl() { return s3.getBucketBaseUrl() + prefix; }

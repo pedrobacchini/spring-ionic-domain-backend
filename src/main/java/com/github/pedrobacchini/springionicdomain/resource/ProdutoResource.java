@@ -27,13 +27,13 @@ public class ProdutoResource {
     @GetMapping
     public ResponseEntity<Page<ProdutoDTO>> findPage(
             @RequestParam String nome,
-            @RequestParam String categorias,
+            @RequestParam String categories,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "24") Integer linesPerPage,
             @RequestParam(defaultValue = "nome") String orderBy,
             @RequestParam(defaultValue = "ASC") String direction) {
         String nomeDecode = URL.decodeParam(nome);
-        List<Integer> ids = URL.decodeIntList(categorias);
+        List<Integer> ids = URL.decodeIntList(categories);
         Page<Produto> produtoPage = produtoService.search(nomeDecode, ids, page, linesPerPage, orderBy, direction);
         Page<ProdutoDTO> produtoDTOPage = produtoPage.map(ProdutoDTO::new);
         return ResponseEntity.ok(produtoDTOPage);

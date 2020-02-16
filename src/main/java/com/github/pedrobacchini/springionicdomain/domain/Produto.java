@@ -21,9 +21,9 @@ public class Produto implements Serializable {
 
     @JsonIgnore
     @ManyToMany
-    @JoinTable(name = "PRODUTO_CATEGORIA",
+    @JoinTable(name = "PRODUTO_CATEGORY",
             joinColumns = @JoinColumn(name = "produto_id"),
-            inverseJoinColumns = @JoinColumn(name = "categoria_id"))
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories = new ArrayList<>();
 
     @JsonIgnore

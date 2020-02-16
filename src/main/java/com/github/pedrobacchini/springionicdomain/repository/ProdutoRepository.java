@@ -19,8 +19,8 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
     @Query("SELECT DISTINCT obj " +
             "FROM Produto obj " +
             "INNER JOIN obj.categories cat " +
-            "WHERE obj.nome LIKE %:nome% and cat IN :categorias")
-    Page<Produto> search(@Param("name") String nome,
+            "WHERE obj.nome LIKE %:name% and cat IN :categories")
+    Page<Produto> search(@Param("name") String name,
                          @Param("categories") List<Category> categories,
                          Pageable pageRequest);
 

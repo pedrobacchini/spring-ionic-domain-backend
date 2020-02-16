@@ -30,6 +30,6 @@ public class CategoryDTO implements Serializable {
         this.id = category.getId();
         this.name = category.getName();
         ApplicationProperties applicationProperties = SpringIonicDomainApplication.getBean(ApplicationProperties.class);
-        this.picture = applicationProperties.getImage().getCategoria().getBucketBaseUrl() + id +".jpg";
+        this.picture = applicationProperties.getImage().getCategory().getBucketBaseUrl() + id +".jpg";
     }
 }
