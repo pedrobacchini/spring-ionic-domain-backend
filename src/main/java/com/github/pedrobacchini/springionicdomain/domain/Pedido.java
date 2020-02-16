@@ -21,8 +21,8 @@ public class Pedido implements Serializable {
     private Date instante;
 
     @ManyToOne
-    @JoinColumn(name = "endereco_id")
-    private Endereco enderecoDeEntrega;
+    @JoinColumn(name = "address_id")
+    private Address addressDeEntrega;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
@@ -36,9 +36,9 @@ public class Pedido implements Serializable {
 
     public Pedido() { }
 
-    public Pedido(Date instante, Endereco enderecoDeEntrega, Client client) {
+    public Pedido(Date instante, Address addressDeEntrega, Client client) {
         this.instante = instante;
-        this.enderecoDeEntrega = enderecoDeEntrega;
+        this.addressDeEntrega = addressDeEntrega;
         this.client = client;
     }
 
@@ -52,9 +52,9 @@ public class Pedido implements Serializable {
 
     public void setInstante(Date instante) { this.instante = instante; }
 
-    public Endereco getEnderecoDeEntrega() { return enderecoDeEntrega; }
+    public Address getAddressDeEntrega() { return addressDeEntrega; }
 
-    public void setEnderecoDeEntrega(Endereco enderecoDeEntrega) { this.enderecoDeEntrega = enderecoDeEntrega; }
+    public void setAddressDeEntrega(Address addressDeEntrega) { this.addressDeEntrega = addressDeEntrega; }
 
     public Client getClient() { return client; }
 

@@ -1,6 +1,8 @@
 package com.github.pedrobacchini.springionicdomain.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,8 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Setter
+@Getter
 @Entity
-public class Estado implements Serializable {
+public class State implements Serializable {
 
     private static final long serialVersionUID = 3291895837516514823L;
 
@@ -17,37 +21,25 @@ public class Estado implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nome;
+    private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "estado")
-    private List<Cidade> cidades = new ArrayList<>();
+    @OneToMany(mappedBy = "state")
+    private List<City> cities = new ArrayList<>();
 
-    public Estado() { }
+    public State() { }
 
-    public Estado(Integer id, String nome) {
+    public State(Integer id, String name) {
         this.id = id;
-        this.nome = nome;
+        this.name = name;
     }
-
-    public Integer getId() { return id; }
-
-    public void setId(Integer id) { this.id = id; }
-
-    public String getNome() { return nome; }
-
-    public void setNome(String nome) { this.nome = nome; }
-
-    public List<Cidade> getCidades() { return cidades; }
-
-    public void setCidades(List<Cidade> cidades) { this.cidades = cidades; }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Estado estado = (Estado) o;
-        return Objects.equals(id, estado.id);
+        State state = (State) o;
+        return Objects.equals(id, state.id);
     }
 
     @Override

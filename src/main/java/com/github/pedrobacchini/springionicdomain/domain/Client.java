@@ -44,7 +44,7 @@ public class Client implements Serializable {
 
     @Getter
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Endereco> enderecos = new ArrayList<>();
+    private List<Address> addresses = new ArrayList<>();
 
     @Getter
     @ElementCollection

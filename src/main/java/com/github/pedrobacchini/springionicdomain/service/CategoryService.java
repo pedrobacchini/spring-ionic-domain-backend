@@ -30,7 +30,7 @@ public class CategoryService {
     }
 
     public Category insert(Category category) {
-        //Para ter certeza que e um atualização e nao uma inserção
+        //To make sure it's an update and not an insert
         category.setId(null);
         return categoryRepository.save(category);
     }

@@ -2,15 +2,15 @@ package com.github.pedrobacchini.springionicdomain.service;
 
 import com.github.pedrobacchini.springionicdomain.config.ApplicationProperties;
 import com.github.pedrobacchini.springionicdomain.config.LocaleMessageSource;
-import com.github.pedrobacchini.springionicdomain.domain.Cidade;
+import com.github.pedrobacchini.springionicdomain.domain.City;
 import com.github.pedrobacchini.springionicdomain.domain.Client;
-import com.github.pedrobacchini.springionicdomain.domain.Endereco;
+import com.github.pedrobacchini.springionicdomain.domain.Address;
 import com.github.pedrobacchini.springionicdomain.dto.ClientDTO;
 import com.github.pedrobacchini.springionicdomain.dto.ClientNewDTO;
 import com.github.pedrobacchini.springionicdomain.enums.Role;
 import com.github.pedrobacchini.springionicdomain.enums.ClientType;
 import com.github.pedrobacchini.springionicdomain.repository.ClientRepository;
-import com.github.pedrobacchini.springionicdomain.repository.EnderecoRepository;
+import com.github.pedrobacchini.springionicdomain.repository.AddressRepository;
 import com.github.pedrobacchini.springionicdomain.security.ClientUserDetails;
 import com.github.pedrobacchini.springionicdomain.service.exception.AuthorizationException;
 import com.github.pedrobacchini.springionicdomain.service.exception.DataIntegrityException;
@@ -43,7 +43,7 @@ public class ClientService {
     private final ImageService imageService;
 
     private final ClientRepository clientRepository;
-    private final EnderecoRepository enderecoRepository;
+    private final AddressRepository addressRepository;
 
     public Client find(Integer id) {
 
@@ -72,10 +72,10 @@ public class ClientService {
 
     @Transactional
     public Client insert(Client client) {
-        //Para ter certeza que e um atualização e nao uma inserção
+        //To make sure it's an update and not an insert
         client.setId(null);
         client = clientRepository.save(client);
-        enderecoRepository.saveAll(client.getEnderecos());
+        addressRepository.saveAll(client.getAddresses());
         return client;
     }
 
@@ -120,24 +120,24 @@ public class ClientService {
                 ClientType.toEnum(clientNewDTO.getType()),
                 bCryptPasswordEncoder.encode(clientNewDTO.getPassword()));
 
-        Cidade cidade = new Cidade(clientNewDTO.getCidadeId(), null, null);
+        City city = new City(clientNewDTO.getCityId(), null, null);
 
-        Endereco endereco = new Endereco(
+        Address address = new Address(
                 null,
-                clientNewDTO.getLogradouro(),
-                clientNewDTO.getNumero(),
-                clientNewDTO.getComplemento(),
-                clientNewDTO.getBairro(),
+                clientNewDTO.getStreet(),
+                clientNewDTO.getNumber(),
+                clientNewDTO.getComplement(),
+                clientNewDTO.getNeighborhood(),
                 clientNewDTO.getCep(),
                 client,
-                cidade);
-        client.getEnderecos().add(endereco);
-        client.getPhones().add(clientNewDTO.getTelefone1());
-        if (clientNewDTO.getTelefone2() != null) {
-            client.getPhones().add(clientNewDTO.getTelefone2());
+                city);
+        client.getAddresses().add(address);
+        client.getPhones().add(clientNewDTO.getPhone1());
+        if (clientNewDTO.getPhone2() != null) {
+            client.getPhones().add(clientNewDTO.getPhone2());
         }
-        if (clientNewDTO.getTelefone3() != null) {
-            client.getPhones().add(clientNewDTO.getTelefone3());
+        if (clientNewDTO.getPhone3() != null) {
+            client.getPhones().add(clientNewDTO.getPhone3());
         }
         return client;
     }

@@ -1,6 +1,6 @@
 package com.github.pedrobacchini.springionicdomain.repository;
 
-import com.github.pedrobacchini.springionicdomain.domain.Estado;
+import com.github.pedrobacchini.springionicdomain.domain.State;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface EstadoRepository extends JpaRepository<Estado, Integer> {
+public interface StateRepository extends JpaRepository<State, Integer> {
 
     @Transactional(readOnly = true)
-    List<Estado> findAllByOrderByNome();
+    List<State> findAllByOrderByName();
 }

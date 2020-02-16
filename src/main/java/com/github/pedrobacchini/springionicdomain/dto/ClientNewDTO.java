@@ -35,24 +35,24 @@ public class ClientNewDTO implements Serializable {
     private String password;
 
     @NotEmpty(message = "Preenchimento obrigatório")
-    private String logradouro;
+    private String street;
 
     @NotEmpty(message = "Preenchimento obrigatório")
-    private String numero;
+    private String number;
 
-    private String complemento;
+    private String complement;
 
-    private String bairro;
+    private String neighborhood;
 
     @NotEmpty(message = "Preenchimento obrigatório")
     private String cep;
 
     @NotEmpty(message = "Preenchimento obrigatório")
-    private String telefone1;
+    private String phone1;
 
-    private String telefone2;
+    private String phone2;
 
-    private String telefone3;
+    private String phone3;
 
-    private Integer cidadeId;
+    private Integer cityId;
 }

@@ -15,7 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Cidade implements Serializable {
+public class City implements Serializable {
 
     private static final long serialVersionUID = 9047842126958355681L;
 
@@ -25,9 +25,9 @@ public class Cidade implements Serializable {
     private Integer id;
 
     @JsonView(View.FindAll.class)
-    private String nome;
+    private String name;
 
     @ManyToOne
-    @JoinColumn(name = "estado_id")
-    private Estado estado;
+    @JoinColumn(name = "state_id")
+    private State state;
 }

@@ -15,13 +15,13 @@ public class ClientUserDetails implements UserDetails {
 
     private int id;
     private String email;
-    private String senha;
+    private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public ClientUserDetails(int id, String email, String senha, Set<Role> roles) {
+    public ClientUserDetails(int id, String email, String password, Set<Role> roles) {
         this.id = id;
         this.email = email;
-        this.senha = senha;
+        this.password = password;
         this.authorities = roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getDescription()))
                 .collect(Collectors.toSet());
@@ -33,7 +33,7 @@ public class ClientUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() { return authorities; }
 
     @Override
-    public String getPassword() { return senha; }
+    public String getPassword() { return password; }
 
     @Override
     public String getUsername() { return email; }

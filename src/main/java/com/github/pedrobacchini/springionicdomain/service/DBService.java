@@ -20,9 +20,9 @@ public class DBService {
 
     private final CategoryRepository categoryRepository;
     private final ProdutoRepository produtoRepository;
-    private final EstadoRepository estadoRepository;
-    private final CidadeRepository cidadeRepository;
-    private final EnderecoRepository enderecoRepository;
+    private final StateRepository stateRepository;
+    private final CityRepository cityRepository;
+    private final AddressRepository addressRepository;
     private final ClientRepository clientRepository;
     private final PedidoRepository pedidoRepository;
     private final PagamentoRepository pagamentoRepository;
@@ -116,18 +116,18 @@ public class DBService {
                 produto38, produto39, produto40, produto41, produto42, produto43, produto44, produto45,
                 produto46, produto47, produto48, produto49, produto50));
 
-        Estado estado1 = new Estado(null, "Minas Gerais");
-        Estado estado2 = new Estado(null, "São Paulo");
+        State state1 = new State(null, "Minas Gerais");
+        State state2 = new State(null, "São Paulo");
 
-        Cidade cidade1 = new Cidade(null, "Uberlândia", estado1);
-        Cidade cidade2 = new Cidade(null, "São Paulo", estado2);
-        Cidade cidade3 = new Cidade(null, "Campinas", estado2);
+        City city1 = new City(null, "Uberlândia", state1);
+        City city2 = new City(null, "São Paulo", state2);
+        City city3 = new City(null, "Campinas", state2);
 
-        estado1.getCidades().add(cidade1);
-        estado2.getCidades().addAll(Arrays.asList(cidade2, cidade3));
+        state1.getCities().add(city1);
+        state2.getCities().addAll(Arrays.asList(city2, city3));
 
-        estadoRepository.saveAll(Arrays.asList(estado1, estado2));
-        cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
+        stateRepository.saveAll(Arrays.asList(state1, state2));
+        cityRepository.saveAll(Arrays.asList(city1, city2, city3));
 
         Client mariaSilva = new Client(null,
                 "Maria Silva",
@@ -146,21 +146,21 @@ public class DBService {
         anaCosta.getPhones().add("66996193389");
         anaCosta.addRole(Role.ADMIN);
 
-        Endereco endereco1 = new Endereco(null, "Rua Flores",
+        Address address1 = new Address(null, "Rua Flores",
                 "300", "Apto 203",
-                "Jardim", "38220834", mariaSilva, cidade1);
-        Endereco endereco2 = new Endereco(null, "Avenida Matos",
+                "Jardim", "38220834", mariaSilva, city1);
+        Address address2 = new Address(null, "Avenida Matos",
                 "105", "Sala 800",
-                "Centro", "38777012", mariaSilva, cidade2);
-        Endereco endereco3 = new Endereco(null, "Avenida Floriano",
+                "Centro", "38777012", mariaSilva, city2);
+        Address address3 = new Address(null, "Avenida Floriano",
                 "2106", null,
-                "Centro", "5646546", anaCosta, cidade2);
+                "Centro", "5646546", anaCosta, city2);
 
-        mariaSilva.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
-        anaCosta.getEnderecos().add(endereco3);
+        mariaSilva.getAddresses().addAll(Arrays.asList(address1, address2));
+        anaCosta.getAddresses().add(address3);
 
         clientRepository.saveAll(Arrays.asList(mariaSilva, anaCosta));
-        enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2, endereco3));
+        addressRepository.saveAll(Arrays.asList(address1, address2, address3));
 
         SimpleDateFormat formatDiaHora = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         SimpleDateFormat formatDia = new SimpleDateFormat("dd-MM-yyyy");
@@ -172,11 +172,11 @@ public class DBService {
         instante2 = formatDiaHora.parse("10-10-2017 19:35");
         dataVencimento = formatDia.parse("20-10-2017");
 
-        Pedido pedido1 = new Pedido(instante1, endereco1, mariaSilva);
+        Pedido pedido1 = new Pedido(instante1, address1, mariaSilva);
         Pagamento pagamentoComCartao = new PagamentoComCartao(null, EstadoPagamento.QUITADO, pedido1, 6);
         pedido1.setPagamento(pagamentoComCartao);
 
-        Pedido pedido2 = new Pedido(instante2, endereco2, mariaSilva);
+        Pedido pedido2 = new Pedido(instante2, address2, mariaSilva);
         Pagamento pagamentoComBoleto = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, pedido2, dataVencimento, null);
         pedido2.setPagamento(pagamentoComBoleto);
 
