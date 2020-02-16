@@ -18,36 +18,36 @@ public class ClientNewDTO implements Serializable {
 
     private static final long serialVersionUID = -6207584080809869048L;
 
-    @NotEmpty(message = "Preenchimento obrigatório")
-    @Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 80 caracteres")
+    @NotEmpty
+    @Length(min = 5, max = 120)
     private String name;
 
-    @NotEmpty(message = "Preenchimento obrigatório")
-    @Email(message = "Email invalido")
+    @NotEmpty
+    @Email
     private String email;
 
-    @NotEmpty(message = "Preenchimento obrigatório")
+    @NotEmpty
     private String cpfOrCnpj;
 
     private Integer type;
 
-    @NotEmpty(message = "Preenchimento obrigatório")
+    @NotEmpty
     private String password;
 
-    @NotEmpty(message = "Preenchimento obrigatório")
+    @NotEmpty
     private String street;
 
-    @NotEmpty(message = "Preenchimento obrigatório")
+    @NotEmpty
     private String number;
 
     private String complement;
 
     private String neighborhood;
 
-    @NotEmpty(message = "Preenchimento obrigatório")
+    @NotEmpty
     private String cep;
 
-    @NotEmpty(message = "Preenchimento obrigatório")
+    @NotEmpty
     private String phone1;
 
     private String phone2;

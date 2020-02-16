@@ -13,7 +13,7 @@ public class EmailDTO implements Serializable {
 
     private static final long serialVersionUID = -4583539683902376964L;
 
-    @NotEmpty(message = "Preenchimento obrigatório")
-    @Email(message = "Email invalido")
+    @NotEmpty
+    @Email
     private String email;
 }
