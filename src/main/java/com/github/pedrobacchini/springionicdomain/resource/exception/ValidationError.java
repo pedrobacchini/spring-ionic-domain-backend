@@ -10,11 +10,11 @@ public class ValidationError extends StandardError {
 
     private static final long serialVersionUID = 3174066705345398821L;
 
-    private List<FieldMessage> erros = new ArrayList<>();
+    private List<FieldMessage> errors = new ArrayList<>();
 
     public ValidationError(Long timestamp, Integer status, String error, String message, String path) {
         super(timestamp, status, error, message, path);
     }
 
-    public void addError(FieldMessage fieldMessage) { this.erros.add(fieldMessage); }
+    public void addError(FieldMessage fieldMessage) { this.errors.add(fieldMessage); }
 }
